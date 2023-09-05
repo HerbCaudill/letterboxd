@@ -1,6 +1,6 @@
 import { generatePuzzle } from 'generatePuzzle'
 import { useState } from 'react'
-import { queryString } from 'utils/queryString'
+import { queryString } from 'lib/queryString'
 import { DEFAULT_SIZE, MAX_SIZE, MIN_SIZE } from '../constants'
 import { Game } from './Game'
 

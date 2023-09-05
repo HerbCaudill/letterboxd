@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useReducer, useState } from 'react'
 import { initializer, reducer } from 'reducer'
 import { PuzzleState } from 'types'
-import { range } from 'utils/range'
+import { range } from 'lib/range'
 import { MAX_SIZE, MIN_SIZE } from '../constants'
 import { formatSeconds } from '../formatSeconds'
 import { TotalCell } from './TotalCell'

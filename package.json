@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite --port 3000 --open http://localhost:3000?seed=test",
-    "build:solutions": "ts-node --project ./src/scripts/tsconfig.json ./src/scripts/buildSolutionList.ts",
+    "build:lists": "ts-node --project ./src/scripts/tsconfig.json ./src/scripts/buildWordLists.ts",
     "build": "tsc && vite build",
     "serve": "vite preview",
     "test": "vitest",
