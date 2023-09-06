@@ -43,7 +43,7 @@ export const generateLayout = (solution: string, seed = Math.random().toString()
     // solutions are cheap so we'll just throw an error and try again with a new one
     if (options.length === 0) throw new Error(`Unable to find a valid layout`)
 
-    // otherwise we pick one of the options randomly
+    // pick one of the options randomly
     const side = random.pick(options)
     if (side.size === 0) layout.push(side)
     side.add(letter)
