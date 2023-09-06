@@ -1,6 +1,8 @@
 import { makeRandom } from '@herbcaudill/random'
-import { commonWords, distinctLetterCount } from './words'
+import { commonWords } from '../data/common.json'
+import { distinctLetterCount } from './words'
 import { generateLayout } from './generateLayout'
+import { Puzzle } from 'types'
 
 export const generatePuzzle = (seed = Math.random().toString()) => {
   const random = makeRandom(seed)
@@ -8,7 +10,7 @@ export const generatePuzzle = (seed = Math.random().toString()) => {
     const solution = generateRandomSolution(seed)
     try {
       const layout = generateLayout(solution, seed)
-      return { solution, layout }
+      return { solution, layout } as Puzzle
     } catch (e) {
       // if we can't find a valid layout, we'll just try again with a new seed
       seed = random.alpha(10)

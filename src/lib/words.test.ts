@@ -1,4 +1,4 @@
-import { commonWords, distinctLetterCount, isValid } from './words'
+import { distinctLetterCount, isValid } from './words'
 
 describe('distinctLetterCount', () => {
   it('should return the number of distinct letters in a word, excluding spaces', () => {
@@ -30,27 +30,5 @@ describe('isValid', () => {
   it('should validate uncommon words', () => {
     expect(isValid('ABACA')).toBe(true)
     expect(isValid('ZYMURGY')).toBe(true)
-  })
-})
-
-describe('commonWords', () => {
-  it('should contain common words', () => {
-    expect(commonWords).toContain('HOUSE')
-    expect(commonWords).toContain('PARTY')
-  })
-
-  it('should not contain words with double letters', () => {
-    expect(commonWords).not.toContain('PRETTY')
-    expect(commonWords).not.toContain('BALLERINA')
-  })
-
-  it('should not contain proper names', () => {
-    expect(commonWords).not.toContain('AMERICAN')
-    expect(commonWords).not.toContain('ROBERT')
-  })
-
-  it('should not contain uncommon words', () => {
-    expect(commonWords).not.toContain('ABACA')
-    expect(commonWords).not.toContain('ZYMURGY')
   })
 })

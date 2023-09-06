@@ -1,18 +1,9 @@
 import { Reducer } from 'react'
-import { isValid } from 'words'
+import { State } from 'types'
+import { isValid } from './lib/words'
 
 export const reducer: Reducer<State, Action> = (state, action) => {
   switch (action.type) {
-    case 'NEW': {
-      // start new game with given set of letters
-      return {
-        letters: action.letters,
-        words: [],
-        currentWord: '',
-        error: null,
-      }
-    }
-
     case 'ADD': {
       // add letter to current word
       return {
@@ -77,13 +68,6 @@ const validate = (word: string): ValidationResult => {
     return { isValid: false, error: 'Not a word' }
   }
   return { isValid: true }
-}
-
-export type State = {
-  letters: string
-  words: string[]
-  currentWord: string
-  error: string | null
 }
 
 export type Action =

@@ -1,9 +1,7 @@
-﻿import { makeRandom } from '@herbcaudill/random'
-import fs from 'fs'
-import { getLinesFromFile } from 'lib/getLinesFromFile'
+﻿import { commonWords } from '../data/common.json'
+import { uncommonWords } from '../data/uncommon.json'
+
 import { uniq } from 'lodash'
-import path from 'path'
-import { generateLists } from './generateLists'
 
 export const distinctLetters = (s: string) => uniq(s.replace(' ', ''))
 
@@ -16,11 +14,6 @@ export const hasDoubleLetters = (word: string) => {
   return false
 }
 
-if (!fs.existsSync(path.join(__dirname, '../data/common.txt'))) await generateLists()
-
-export const commonWords = await getLinesFromFile('../data/common.txt')
-
-const uncommonWords = await getLinesFromFile('../data/uncommon.txt')
 export const allWords = commonWords.concat(uncommonWords)
 
 const allWordsSet = new Set(allWords)
