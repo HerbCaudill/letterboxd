@@ -21,7 +21,7 @@ if (!fs.existsSync(path.join(__dirname, '../data/common.txt'))) await generateLi
 export const commonWords = await getLinesFromFile('../data/common.txt')
 
 const uncommonWords = await getLinesFromFile('../data/uncommon.txt')
-const allWords = commonWords.concat(uncommonWords)
+export const allWords = commonWords.concat(uncommonWords)
 
 const allWordsSet = new Set(allWords)
 export const isValid = (word: string) => allWordsSet.has(word)

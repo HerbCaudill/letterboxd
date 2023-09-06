@@ -1,11 +1,6 @@
 import { uniq } from 'lodash'
-import {
-  Layout,
-  generateLayout,
-  generatePuzzle,
-  generateRandomSolution,
-  getAdjacencyMap,
-} from './generatePuzzle'
+import { layoutToString } from './generateLayout'
+import { generatePuzzle, generateRandomSolution } from './generatePuzzle'
 import { range } from './range'
 
 describe('generateRandomSolution', () => {
@@ -523,72 +518,12 @@ describe('generateRandomSolution', () => {
   })
 })
 
-describe('getAdjacencyMap', () => {
-  const testCase = (solution: string, expected: Record<string, string>) => {
-    const adjacencyMap = {} as Record<string, Set<string>>
-    for (const letter in expected) {
-      adjacencyMap[letter] = new Set(expected[letter].split(''))
-    }
-    expect(getAdjacencyMap(solution)).toEqual(adjacencyMap)
-  }
-
-  it('FREAKIEST THONGS', () => {
-    testCase('FREAKIEST THONGS', {
-      F: 'R',
-      R: 'FE',
-      E: 'RAIS',
-      A: 'EK',
-      K: 'AI',
-      I: 'KE',
-      S: 'ETG',
-      T: 'SH',
-      H: 'TO',
-      O: 'HN',
-      N: 'OG',
-      G: 'NS',
-    })
-  })
-
-  it('ABNORMALITIES SENSITIZATION', () => {
-    testCase('ABNORMALITIES SENSITIZATION', {
-      A: 'BMLZT',
-      B: 'AN',
-      N: 'BOES',
-      O: 'NRI',
-      R: 'OM',
-      M: 'RA',
-      L: 'AI',
-      I: 'LTESZO',
-      T: 'IA',
-      E: 'ISN',
-      S: 'ENI',
-      Z: 'IA',
-    })
-  })
-})
-
-describe('generateLayout', () => {
-  it('generates a layout when possible', () => {
-    const seed = 'test-1'
-    expect(layoutSummary(generateLayout('FREAKIEST THONGS', seed))).toEqual('AIO/EFT/GKR/HNS')
-    expect(layoutSummary(generateLayout('ABNORMALITIES SENSITIZATION', seed))).toEqual(
-      'AIN/BRZ/ELT/MOS'
-    )
-  })
-
-  it('throws an error when no layout is found', () => {
-    // this seed happens not to find a layout for this solution
-    const seed = 'test-2'
-    expect(() => generateLayout('ABNORMALITIES SENSITIZATION', seed)).toThrow()
-  })
-})
-
 describe('generatePuzzle', () => {
   it('always returns a valid puzzle', () => {
     const N = 100
     const solutions = range(N).map(i => {
       const { solution, layout } = generatePuzzle(`test-${i}`)
-      return `${solution} ${layoutSummary(layout)}`
+      return `${solution} ${layoutToString(layout)}`
     })
     expect(solutions).toMatchInlineSnapshot(`
       [
@@ -696,8 +631,3 @@ describe('generatePuzzle', () => {
     `)
   })
 })
-
-const layoutSummary = (layout: Layout) => {
-  const sides = Array.from(layout).map(side => Array.from(side).sort().join(''))
-  return sides.sort().join('/')
-}
