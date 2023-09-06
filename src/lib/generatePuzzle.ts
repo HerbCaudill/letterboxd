@@ -22,7 +22,7 @@ export const generateLayout = (solution: string, seed = Math.random().toString()
 
   for (const letter of distinctLetters(solution)) {
     // for each letter, the options are:
-    // (1) find an existing side that has room and doesn't contain any adjacent letters
+    // (A) find an existing side that has room and doesn't contain any adjacent letters
     const options = layout.filter(
       side =>
         // side isn't full
@@ -31,13 +31,16 @@ export const generateLayout = (solution: string, seed = Math.random().toString()
         !Array.from(side).some(l => adjacencyMap[letter].has(l))
     )
 
-    // OR (2) create a new side, if we don't have 4 yet
+    // OR (B) create a new side, if we don't have 4 yet
     if (layout.length < 4) options.push(new Set() as Side)
 
-    // if there are no options, there are two possibilities:
-    // - maybe if we'd made different choices earlier, we could find a valid layout
-    // - maybe there's not a valid layout for this solution
-    // solutions are cheap so we'll just throw an error and get a new one
+    // If there are no options, there are two possibilities:
+    //   1. maybe if we'd made different choices earlier, we could find a valid layout
+    //   2. maybe there's not a valid layout for this solution
+    //
+    // We could try to come up with a principled way of generating all possible layouts and then
+    // picking one, in case this is the second possibility and there is a valid layout; but
+    // solutions are cheap so we'll just throw an error and try again with a new one
     if (options.length === 0) throw new Error(`Unable to find a valid layout`)
 
     // otherwise we pick one of the options randomly
