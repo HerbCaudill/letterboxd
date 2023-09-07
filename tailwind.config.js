@@ -3,7 +3,7 @@ const colors = require('tailwindcss/colors')
 
 const emoji = 'Segoe UI Emoji'
 const mono = 'IBM Plex Mono'
-const sans = 'IBM Plex Sans'
+const sans = 'Libre Franklin Variable'
 const condensed = 'IBM Plex Sans Condensed'
 const serif = 'IBM Plex Serif'
 
@@ -19,6 +19,7 @@ module.exports = {
         serif: [serif, emoji, 'serif'],
       },
       colors: {
+        background: '#FAA6A4',
         primary: colors.blue,
         secondary: colors.teal,
         neutral: colors.gray,
@@ -31,11 +32,11 @@ module.exports = {
         extralight: 200,
         light: 300,
         normal: 400,
-        text: 450,
         medium: 500,
         semibold: 600,
         bold: 700,
         extrabold: 800,
+        black: 900,
       },
     },
   },

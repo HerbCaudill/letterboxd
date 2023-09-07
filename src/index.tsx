@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import 'tailwindcss/tailwind.css'
 import { App } from 'components/App'
-import '@ibm/plex/css/ibm-plex.css'
+import '@fontsource-variable/libre-franklin'
 import './index.css'
 
 const container = document.getElementById('root') as HTMLDivElement

@@ -1198,6 +1198,11 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.43.0.tgz#559ca3d9ddbd6bf907ad524320a0d14b85586af0"
   integrity sha512-s2UHCoiXfxMvmfzqoN+vrQ84ahUSYde9qNO1MdxmoEhyHWsfmwOpFlwYV+ePJEVc7gFnATGUi376WowX1N7tFg==
 
+"@fontsource-variable/libre-franklin@^5.0.9":
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/libre-franklin/-/libre-franklin-5.0.9.tgz#234ba141ee3b91bd6a96db427220d47b0a187461"
+  integrity sha512-MmNmeWmzmoSsyM8fyDHRVQcXc05FctlPVZuPWENeqqHjA51KIWFhwjHiwyIb/WeXqxflQQwvwr7ZYHe1v29j4A==
+
 "@headlessui/react@^1.7.15":
   version "1.7.15"
   resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.15.tgz#53ef6ae132af81b8f188414767b6e79ebf8dc73f"
