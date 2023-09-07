@@ -8,10 +8,17 @@ import { isAlpha } from 'lib/isAlpha'
 const size = 525
 const squareSize = size * 0.5
 const origin = (size - squareSize) / 2
-const bubbleSize = squareSize * 0.03
-const stroke = squareSize * 0.012
-const fontSize = squareSize * 0.11
-const scale = 25
+const letterSize = squareSize * 0.11
+const bubbleSize = letterSize * 0.3
+const stroke = letterSize * 0.1
+const offset = 0.6
+
+const TOP = 'TOP'
+const RIGHT = 'RIGHT'
+const BOTTOM = 'BOTTOM'
+const LEFT = 'LEFT'
+
+const sides = [TOP, RIGHT, BOTTOM, LEFT]
 
 export const Game = ({ layout }: Props) => {
   const initialState: State = {
@@ -52,16 +59,15 @@ export const Game = ({ layout }: Props) => {
       <div className={`select-none`}>
         <div
           className="border-b-[3px] h-12 border-black flex justify-center content-center items-center font-bold"
-          style={{ height: 50 }}
+          style={{ height: letterSize * 2 }}
         >
-          <div style={{ fontSize: scale, lineHeight: 1 }}>{state.currentWord}</div>
+          <div style={{ fontSize: letterSize, lineHeight: 1 }}>{state.currentWord}</div>
           {/* cursor */}
           <div
             className="bg-black animate-blink ml-1"
-            style={{ top: 3, width: 3, height: 28 }}
-          ></div>
+            style={{ top: 3, width: 3, height: letterSize }}
+          />
         </div>
-
         <svg
           width={size}
           height={size}
@@ -79,28 +85,40 @@ export const Game = ({ layout }: Props) => {
             strokeWidth={stroke}
           />
           {layout.flatMap((letters, i) => {
-            const side = ['top', 'right', 'bottom', 'left'][i]
+            const which = sides[i]
 
             // offset of text relative to bubble
             const xOffset =
-              side === 'left' ? -fontSize * 0.6 : side === 'right' ? fontSize * 0.6 : 0
+              which === LEFT //
+                ? -letterSize * offset
+                : which === RIGHT
+                ? letterSize * offset
+                : // TOP or BOTTOM
+                  0
             const yOffset =
-              side === 'top' ? -fontSize * 0.6 : side === 'bottom' ? fontSize * 1.4 : fontSize * 0.3
+              which === TOP //
+                ? -letterSize * offset
+                : which === BOTTOM
+                ? letterSize * offset * 2.2
+                : // LEFT or RIGHT
+                  letterSize * offset * 0.5
 
             // alignment of text
             const textAnchor =
-              side === 'left'
+              which === LEFT
                 ? 'end' // left side: right align
-                : side === 'right'
+                : which === RIGHT
                 ? 'start' // right side: left align
-                : 'middle' // top & bottom sides: center align
+                : // TOP or BOTTOM
+                  'middle' // top & bottom sides: center align
 
-            const sidePosition = origin + squareSize * (side === 'top' || side === 'left' ? 0 : 1)
+            const sidePosition = origin + squareSize * (which === TOP || which === LEFT ? 0 : 1)
+
             return Array.from(letters).map((letter, i) => {
               const bubblePosition = origin + (squareSize * (1 + 2 * i)) / 6
 
               const position =
-                side === 'top' || side === 'bottom'
+                which === TOP || which === BOTTOM
                   ? { x: bubblePosition, y: sidePosition }
                   : { x: sidePosition, y: bubblePosition }
 
@@ -119,7 +137,7 @@ export const Game = ({ layout }: Props) => {
                   <text
                     x={position.x + xOffset}
                     y={position.y + yOffset}
-                    style={{ fontSize }}
+                    style={{ fontSize: letterSize }}
                     textAnchor={textAnchor}
                     className={`font-sans font-semibold fill-white`}
                   >
