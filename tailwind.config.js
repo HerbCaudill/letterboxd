@@ -9,7 +9,6 @@ const serif = 'IBM Plex Serif'
 
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
-  safelist: [4, 5, 6, 7, 8, 9, 10].map(x => `grid-cols-${x}`), // MIN_SIZE+1...MAX_SIZE+1 (keep in sync with src\constants.ts)
   theme: {
     extend: {
       fontFamily: {
@@ -37,6 +36,15 @@ module.exports = {
         bold: 700,
         extrabold: 800,
         black: 900,
+      },
+      keyframes: {
+        blink: {
+          'from, to': { opacity: 1 },
+          '50%': { opacity: 0 },
+        },
+      },
+      animation: {
+        blink: '1000ms blink step-end infinite',
       },
     },
   },

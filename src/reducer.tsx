@@ -12,6 +12,14 @@ export const reducer: Reducer<State, Action> = (state, action) => {
       }
     }
 
+    case 'DELETE': {
+      // delete last letter from current word
+      return {
+        ...state,
+        currentWord: state.currentWord.slice(0, -1),
+      }
+    }
+
     case 'ENTER': {
       // check if current word is valid
       const validationResult = validate(state.currentWord)
