@@ -30,26 +30,8 @@ export const Game = ({ layout }: Props) => {
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const nextLetterCanBe = (letter: string) => {
-    letter = letter.toUpperCase()
-
-    // letter must be in layout
-    if (!layout.some(letters => letters.has(letter))) return false
-
-    // if current word is empty, any letter in the layout is valid
-    if (state.currentWord.length === 0) {
-      console.log('current word is empty')
-      return true
-    }
-
-    // otherwise, letter must be not be on the same side as the previous letter
-    const prevLetter = state.currentWord.slice(-1)
-    const prevLetterSide = layout.find(side => side.has(prevLetter))
-    return !prevLetterSide?.has(letter)
-  }
-
   useKeyboard(({ key }: KeyboardEvent) => {
-    if (isAlpha(key) && nextLetterCanBe(key)) dispatch({ type: 'ADD', letter: key.toUpperCase() })
+    if (isAlpha(key)) dispatch({ type: 'ADD', letter: key.toUpperCase() })
     else if (key === 'Delete' || key === 'Backspace') dispatch({ type: 'DELETE' })
     else if (key === 'Enter') dispatch({ type: 'ENTER' })
   })
@@ -123,7 +105,7 @@ export const Game = ({ layout }: Props) => {
                   : { x: sidePosition, y: bubblePosition }
 
               return (
-                <g>
+                <g onClick={() => dispatch({ type: 'ADD', letter })}>
                   {/* white circle with black borders */}
                   <circle
                     cx={position.x}

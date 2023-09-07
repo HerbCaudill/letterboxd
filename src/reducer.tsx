@@ -1,15 +1,34 @@
 import { Reducer } from 'react'
-import { State } from 'types'
+import { Layout, State } from 'types'
 import { isValid } from './lib/words'
+
+const nextLetterCanBe = (letter: string, state: State) => {
+  letter = letter.toUpperCase()
+
+  // letter must be in layout
+  if (!state.layout.some(letters => letters.has(letter))) return false
+
+  // if current word is empty, any letter in the layout is valid
+  if (state.currentWord.length === 0) {
+    return true
+  }
+
+  // otherwise, letter must be not be on the same side as the previous letter
+  const prevLetter = state.currentWord.slice(-1)
+  const prevLetterSide = state.layout.find(side => side.has(prevLetter))
+  return !prevLetterSide?.has(letter)
+}
 
 export const reducer: Reducer<State, Action> = (state, action) => {
   switch (action.type) {
     case 'ADD': {
-      // add letter to current word
-      return {
-        ...state,
-        currentWord: state.currentWord + action.letter,
-      }
+      // add letter to current word, if allowed
+      if (nextLetterCanBe(action.letter, state))
+        return {
+          ...state,
+          currentWord: state.currentWord + action.letter,
+        }
+      break
     }
 
     case 'DELETE': {
@@ -79,11 +98,6 @@ const validate = (word: string): ValidationResult => {
 }
 
 export type Action =
-  | {
-      type: 'NEW'
-      /** letters is an array of four sets of letters, each set containing 3 letters */
-      letters: string
-    }
   | {
       type: 'ADD'
       letter: string
