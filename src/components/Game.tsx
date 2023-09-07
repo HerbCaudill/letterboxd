@@ -96,8 +96,8 @@ export const Game = ({ layout }: Props) => {
 
             const sidePosition = origin + squareSize * (which === TOP || which === LEFT ? 0 : 1)
 
-            return Array.from(letters).map((letter, i) => {
-              const bubblePosition = origin + (squareSize * (1 + 2 * i)) / 6
+            return Array.from(letters).map((letter, j) => {
+              const bubblePosition = origin + (squareSize * (1 + 2 * j)) / 6
 
               const position =
                 which === TOP || which === BOTTOM
@@ -105,7 +105,7 @@ export const Game = ({ layout }: Props) => {
                   : { x: sidePosition, y: bubblePosition }
 
               return (
-                <g onClick={() => dispatch({ type: 'ADD', letter })}>
+                <g key={`${i}_${j}`} onClick={() => dispatch({ type: 'ADD', letter })}>
                   {/* white circle with black borders */}
                   <circle
                     cx={position.x}
