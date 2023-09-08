@@ -2,21 +2,22 @@ import cx from 'classnames'
 import { Layout } from 'types'
 
 // constants
-const size = 450
-const squareSize = size * 0.6
-const origin = (size - squareSize) / 2
-export const letterSize = squareSize * 0.11
-const nodeSize = letterSize * 0.3
-const stroke = letterSize * 0.1
-const labelOffsetAmount = 0.7
 const TOP = 'TOP'
 const RIGHT = 'RIGHT'
 const BOTTOM = 'BOTTOM'
 const LEFT = 'LEFT'
 
-export const sides = [TOP, RIGHT, BOTTOM, LEFT]
+const sides = [TOP, RIGHT, BOTTOM, LEFT]
 
 export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
+  const size = 100 // doesn't matter, will be scaled to fit container
+  const squareSize = size * 0.7
+  const letterSize = size * 0.055
+  const origin = (size - squareSize) / 2
+  const nodeSize = letterSize * 0.3
+  const stroke = letterSize * 0.1
+  const labelOffsetAmount = 0.7
+
   const nodes = layout.flatMap((letters, i) => {
     const which = sides[i]
 
@@ -87,8 +88,7 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
 
   return (
     <svg
-      width={size}
-      height={size}
+      style={{ width: '100%', height: 'auto' }}
       viewBox={`0 0 ${size} ${size}`}
       xmlns="http://www.w3.org/2000/svg"
     >
