@@ -34,7 +34,7 @@ export const App = ({ layout }: Props) => {
           <WordInput currentWord={state.currentWord} isError={state.message?.type === 'ERROR'} />
         </div>
         <div className="h-10">
-          <MessageDisplay message={state.message} />
+          <MessageDisplay message={state.message} wordCount={state.words.length} />
         </div>
         <div className="h-10 ">
           <FoundWords words={state.words} />

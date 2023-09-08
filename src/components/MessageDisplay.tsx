@@ -2,7 +2,7 @@ import cx from 'classnames'
 import { Message } from 'types'
 import { Confetti } from './Confetti'
 
-export const MessageDisplay = ({ message }: { message?: Message }) => {
+export const MessageDisplay = ({ message, wordCount }: Props) => {
   if (!message) return null
 
   const gameOver = message.type === 'FOUND_SOLUTION'
@@ -10,7 +10,7 @@ export const MessageDisplay = ({ message }: { message?: Message }) => {
 
   return (
     <div>
-      {gameOver && <Confetti />}
+      {gameOver && wordCount < 3 ? <Confetti /> : null}
       <div className="flex justify-center items-center mt-2 h-10 relative ">
         <div
           className={cx(
@@ -30,4 +30,9 @@ export const MessageDisplay = ({ message }: { message?: Message }) => {
       </div>
     </div>
   )
+}
+
+type Props = {
+  message?: Message
+  wordCount: number
 }

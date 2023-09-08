@@ -1,5 +1,6 @@
 import { Layout } from 'types'
 import { allWords, distinctLetterCount } from './words'
+import { commonWords } from '../data/common.json'
 
 export const solvePuzzle = (layout: Layout) => {
   const candidates = candidateWords(layout)
@@ -33,4 +34,4 @@ export const noAdjacentLetters = (word: string, layout: Layout) => {
  * @returns
  */
 export const wordsOnlyContaining = (letters: Set<string>) =>
-  allWords.filter(word => Array.from(word).every(letter => letters.has(letter)))
+  commonWords.filter(word => Array.from(word).every(letter => letters.has(letter)))
