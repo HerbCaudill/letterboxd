@@ -30,14 +30,14 @@ export const App = ({ layout }: Props) => {
   return (
     <div className="flex flex-col items-center h-screen bg-pink">
       <div className="py-12 px-8 container auto-mx flex flex-col max-w-lg gap-3 select-none ">
+        <div className="h-10 ">
+          <FoundWords words={state.words} />
+        </div>
         <div className="h-12 w-full">
           <WordInput currentWord={state.currentWord} isError={state.message?.type === 'ERROR'} />
         </div>
         <div className="h-10">
           <MessageDisplay message={state.message} wordCount={state.words.length} />
-        </div>
-        <div className="h-10 ">
-          <FoundWords words={state.words} />
         </div>
         <div className="sm:p-4 md:p-12">
           <Board
