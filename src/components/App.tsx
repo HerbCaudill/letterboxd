@@ -73,7 +73,7 @@ export const App = ({ layout }: Props) => {
               enter()
             }}
           >
-            g Enter
+            Enter
           </button>
         </div>
       </div>
