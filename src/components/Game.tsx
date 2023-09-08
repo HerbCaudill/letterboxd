@@ -5,13 +5,13 @@ import { useKeyboard } from 'hooks/useKeyboard'
 import { isAlpha } from 'lib/isAlpha'
 
 // constants
-const size = 525
-const squareSize = size * 0.5
+const size = 450
+const squareSize = size * 0.6
 const origin = (size - squareSize) / 2
 const letterSize = squareSize * 0.11
 const bubbleSize = letterSize * 0.3
 const stroke = letterSize * 0.1
-const offset = 0.6
+const offset = 0.7
 
 const TOP = 'TOP'
 const RIGHT = 'RIGHT'
@@ -25,7 +25,6 @@ export const Game = ({ layout }: Props) => {
     layout,
     words: [],
     currentWord: '',
-    error: null,
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -34,29 +33,71 @@ export const Game = ({ layout }: Props) => {
     if (isAlpha(key)) dispatch({ type: 'ADD', letter: key.toUpperCase() })
     else if (key === 'Delete' || key === 'Backspace') dispatch({ type: 'DELETE' })
     else if (key === 'Enter') dispatch({ type: 'ENTER' })
+    else if (key === 'Esc') dispatch({ type: 'RESTART' })
   })
 
   return (
-    <>
-      <div className={`select-none`}>
-        <div
-          className="border-b-[3px] h-12 border-black flex justify-center content-center items-center font-bold"
-          style={{ height: letterSize * 2 }}
-        >
-          <div style={{ fontSize: letterSize, lineHeight: 1 }}>{state.currentWord}</div>
-          {/* cursor */}
-          <div
-            className="bg-black animate-blink ml-1"
-            style={{ top: 3, width: 3, height: letterSize }}
-          />
+    <div className="flex flex-col w-full items-center py-12 max-w-sm select-none border">
+      {/* Input */}
+      <div
+        className={`
+          flex justify-center content-center items-center w-full h-12 
+          ${state.message?.type === 'ERROR' ? 'animate-shake' : ''}
+          `}
+        style={{ borderBottom: '3px solid black', height: letterSize * 2 }}
+      >
+        <div className="font-bold" style={{ fontSize: letterSize, lineHeight: 1 }}>
+          {state.currentWord}
         </div>
+        {/* cursor */}
+        <div
+          className="bg-black animate-blink ml-1"
+          style={{ top: 3, width: 3, height: letterSize }}
+        />
+      </div>
+
+      {/* Found words */}
+      <div className="mt-2 h-10 flex flex-row flex-wrap min-w-full gap-1 justify-center ">
+        {state.words.map((word, i) => (
+          <>
+            <div key={i} className="text-md tracking-wide font-sans">
+              {word}
+            </div>
+            {
+              // add dash after all but last word
+              i < state.words.length - 1 && (
+                <div className="text-white text-sm font-bold">&ndash;</div>
+              )
+            }
+          </>
+        ))}
+      </div>
+
+      {/* Message */}
+      <div className="flex justify-center items-center mt-2 h-10 relative ">
+        {state.message && (
+          <div
+            className={`
+              absolute opacity-0 animate-pop 
+              font-semibold whitespace-nowrap text-center text-sm tracking-wide
+              ${state.message.type === 'ERROR' ? 'bg-black text-white' : 'bg-white text-black'}
+              py-1 px-4
+              rounded border border-black `}
+          >
+            {state.message.text}
+          </div>
+        )}
+      </div>
+
+      {/* Board */}
+      <div>
         <svg
           width={size}
           height={size}
           viewBox={`0 0 ${size} ${size}`}
           xmlns="http://www.w3.org/2000/svg"
         >
-          // white square with black borders
+          {/* white square with black borders */}
           <rect
             width={squareSize}
             height={squareSize}
@@ -81,7 +122,7 @@ export const Game = ({ layout }: Props) => {
               which === TOP //
                 ? -letterSize * offset
                 : which === BOTTOM
-                ? letterSize * offset * 2.2
+                ? letterSize * offset * 2
                 : // LEFT or RIGHT
                   letterSize * offset * 0.5
 
@@ -106,7 +147,7 @@ export const Game = ({ layout }: Props) => {
 
               return (
                 <g key={`${i}_${j}`} onClick={() => dispatch({ type: 'ADD', letter })}>
-                  {/* white circle with black borders */}
+                  {/* white circle with black border */}
                   <circle
                     cx={position.x}
                     cy={position.y}
@@ -119,7 +160,7 @@ export const Game = ({ layout }: Props) => {
                   <text
                     x={position.x + xOffset}
                     y={position.y + yOffset}
-                    style={{ fontSize: letterSize }}
+                    style={{ fontSize: letterSize, lineHeight: 1 }}
                     textAnchor={textAnchor}
                     className={`font-sans font-semibold fill-white`}
                   >
@@ -131,7 +172,7 @@ export const Game = ({ layout }: Props) => {
           })}
         </svg>
       </div>
-    </>
+    </div>
   )
 }
 

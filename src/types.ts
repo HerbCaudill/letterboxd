@@ -15,5 +15,10 @@ export type State = {
   layout: Layout
   words: string[]
   currentWord: string
-  error: string | null
+  message?: Message
+}
+
+export type Message = {
+  text: string
+  type: 'FOUND_WORD' | 'FOUND_SOLUTION' | 'ERROR'
 }

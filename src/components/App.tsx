@@ -6,11 +6,12 @@ export const App = () => {
   // We generate a unique puzzle every day, with a new one appearing at midnight UTC.
   // We can also specify a date in the query string to get the puzzle for that date.
   let seed = String(queryString('date') || getUtcDate())
-  const { layout } = generatePuzzle(seed)
+  const { solution, layout } = generatePuzzle(seed)
+  console.log(solution)
 
   return (
     <div className="flex flex-col items-center h-screen bg-background">
-      <div className="container auto-mx flex flex-col max-w-xl gap-2">
+      <div className="container auto-mx flex flex-col items-center max-w-xl ">
         <Game layout={layout} />
       </div>
     </div>
