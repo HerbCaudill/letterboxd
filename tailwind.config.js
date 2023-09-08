@@ -20,7 +20,7 @@ module.exports = {
       },
 
       colors: {
-        background: '#FAA6A4',
+        pink: '#FAA6A4',
         primary: colors.blue,
         secondary: colors.teal,
         neutral: colors.gray,

@@ -66,7 +66,7 @@ export const getAdjacencyMap = (solution: string) => {
       if (i === 0) return word
       else return word.substring(1)
     })
-    .flatMap(word => word.split(''))
+    .flatMap(word => Array.from(word))
 
   // now we go through that sequence and build up the adjacency map
   return sequence.reduce((result, letter) => {
@@ -91,4 +91,4 @@ export const layoutToString = (layout: Layout) => {
   return sides.sort().join('/')
 }
 
-export const layoutFromString = (s: string) => s.split('/').map(side => new Set(side.split('')))
+export const layoutFromString = (s: string) => s.split('/').map(side => new Set(side))

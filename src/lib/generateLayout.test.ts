@@ -4,7 +4,7 @@ describe('getAdjacencyMap', () => {
   const testCase = (solution: string, expected: Record<string, string>) => {
     const adjacencyMap = {} as Record<string, Set<string>>
     for (const letter in expected) {
-      adjacencyMap[letter] = new Set(expected[letter].split(''))
+      adjacencyMap[letter] = new Set(expected[letter])
     }
     expect(getAdjacencyMap(solution)).toEqual(adjacencyMap)
   }

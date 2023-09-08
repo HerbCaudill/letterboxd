@@ -19,6 +19,6 @@ export type State = {
 }
 
 export type Message = {
-  text: string
+  text: React.ReactNode
   type: 'FOUND_WORD' | 'FOUND_SOLUTION' | 'ERROR'
 }

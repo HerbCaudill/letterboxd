@@ -1,20 +1,19 @@
+import cx from 'classnames'
+import { useKeyboard } from 'hooks/useKeyboard'
+import { isAlpha } from 'lib/isAlpha'
 import { useReducer } from 'react'
 import { reducer } from 'reducer'
 import { Layout, State } from 'types'
-import { useKeyboard } from 'hooks/useKeyboard'
-import { isAlpha } from 'lib/isAlpha'
-import cx from 'classnames'
-import _Confetti from 'react-confetti'
-import { range } from 'lib/range'
+import { Confetti } from './Confetti'
 
 // constants
 const size = 450
 const squareSize = size * 0.6
 const origin = (size - squareSize) / 2
 const letterSize = squareSize * 0.11
-const bubbleSize = letterSize * 0.3
+const nodeSize = letterSize * 0.3
 const stroke = letterSize * 0.1
-const offset = 0.7
+const labelOffsetAmount = 0.7
 
 const TOP = 'TOP'
 const RIGHT = 'RIGHT'
@@ -24,13 +23,11 @@ const LEFT = 'LEFT'
 const sides = [TOP, RIGHT, BOTTOM, LEFT]
 
 export const Game = ({ layout }: Props) => {
-  const initialState: State = {
+  const [state, dispatch] = useReducer(reducer, {
     layout,
     words: [],
     currentWord: '',
-  }
-
-  const [state, dispatch] = useReducer(reducer, initialState)
+  })
 
   useKeyboard(({ key }: KeyboardEvent) => {
     if (isAlpha(key)) dispatch({ type: 'ADD', letter: key.toUpperCase() })
@@ -39,12 +36,83 @@ export const Game = ({ layout }: Props) => {
     else if (key === 'Escape') dispatch({ type: 'RESTART' })
   })
 
+  const gameOver = state.message?.type === 'FOUND_SOLUTION'
+  const error = state.message?.type === 'ERROR'
+
+  const nodes = layout.flatMap((letters, i) => {
+    const which = sides[i]
+
+    // offset of text relative to node
+    const labelOffset = {
+      x:
+        which === LEFT //
+          ? -letterSize * labelOffsetAmount
+          : which === RIGHT
+          ? letterSize * labelOffsetAmount
+          : // TOP or BOTTOM
+            0,
+
+      y:
+        which === TOP //
+          ? -letterSize * labelOffsetAmount
+          : which === BOTTOM
+          ? letterSize * labelOffsetAmount * 2
+          : // LEFT or RIGHT
+            letterSize * labelOffsetAmount * 0.5,
+    }
+    // alignment of text
+    const labelAlignment =
+      which === LEFT
+        ? 'end' // left side: right align
+        : which === RIGHT
+        ? 'start' // right side: left align
+        : // TOP or BOTTOM
+          'middle' // top & bottom sides: center align
+
+    const sidePosition = origin + squareSize * (which === TOP || which === LEFT ? 0 : 1)
+
+    return Array.from(letters).map((letter, j) => {
+      const nodePosition = origin + (squareSize * (1 + 2 * j)) / 6
+
+      const position =
+        which === TOP || which === BOTTOM
+          ? { x: nodePosition, y: sidePosition }
+          : { x: sidePosition, y: nodePosition }
+
+      return {
+        letter,
+        position,
+        labelOffset,
+        labelAlignment,
+      } as Node
+    })
+  })
+
+  const nodeLookup = nodes.reduce(
+    (result, node) => ({
+      ...result,
+      [node.letter]: node,
+    }),
+    {} as Record<string, Node>
+  )
+
+  const getPoints = (word: string): string => {
+    return Array.from(word)
+      .map(letter => {
+        const { x, y } = nodeLookup[letter].position
+        return `${x},${y}`
+      })
+      .join(' ')
+  }
+
+  const usedLetters = [...state.words, state.currentWord].flatMap(word => Array.from(word))
+
   return (
     <div className="flex flex-col w-full items-center py-12 max-w-sm select-none">
       {/* Input */}
       <div
         className={cx('flex justify-center content-center items-center w-full h-12', {
-          'animate-shake': state.message?.type === 'ERROR',
+          'animate-shake': error,
         })}
         style={{ borderBottom: '3px solid black', height: letterSize * 2 }}
       >
@@ -60,7 +128,7 @@ export const Game = ({ layout }: Props) => {
       </div>
 
       {/* Message */}
-      {state.message?.type === 'FOUND_SOLUTION' && <Confetti />}
+      {gameOver && <Confetti />}
       <div className="flex justify-center items-center mt-2 h-10 relative ">
         {state.message && (
           <div
@@ -69,10 +137,10 @@ export const Game = ({ layout }: Props) => {
               'font-semibold whitespace-nowrap text-center text-sm tracking-wide',
               'py-1 px-4 rounded border border-black',
               {
-                'animate-rise opacity-0': state.message.type !== 'FOUND_SOLUTION',
-                'animate-celebrate': state.message.type === 'FOUND_SOLUTION',
-                'bg-black text-white': state.message.type === 'ERROR',
-                'bg-white text-black': state.message.type !== 'ERROR',
+                'animate-rise opacity-0': !gameOver,
+                'animate-celebrate': gameOver,
+                'bg-black text-white': error,
+                'bg-white text-black': !error,
               }
             )}
           >
@@ -118,85 +186,69 @@ export const Game = ({ layout }: Props) => {
             stroke="black"
             strokeWidth={stroke}
           />
-          {layout.flatMap((letters, i) => {
-            const which = sides[i]
 
-            // offset of text relative to bubble
-            const xOffset =
-              which === LEFT //
-                ? -letterSize * offset
-                : which === RIGHT
-                ? letterSize * offset
-                : // TOP or BOTTOM
-                  0
-            const yOffset =
-              which === TOP //
-                ? -letterSize * offset
-                : which === BOTTOM
-                ? letterSize * offset * 2
-                : // LEFT or RIGHT
-                  letterSize * offset * 0.5
+          {/* lines linking letters in current word */}
+          <polyline
+            fill="none"
+            className="stroke-pink"
+            strokeWidth={stroke * 1.5}
+            strokeDasharray={stroke * 3}
+            points={getPoints(state.currentWord)}
+          ></polyline>
 
-            // alignment of text
-            const textAnchor =
-              which === LEFT
-                ? 'end' // left side: right align
-                : which === RIGHT
-                ? 'start' // right side: left align
-                : // TOP or BOTTOM
-                  'middle' // top & bottom sides: center align
+          {/* lines linking letters in previous words */}
+          {state.words.map((word, i) => (
+            <polyline
+              fill="none"
+              className="stroke-pink"
+              strokeWidth={stroke * 1.5}
+              strokeOpacity={0.8 - (0.6 / state.words.length) * (state.words.length - i)}
+              points={getPoints(word)}
+            />
+          ))}
 
-            const sidePosition = origin + squareSize * (which === TOP || which === LEFT ? 0 : 1)
-
-            return Array.from(letters).map((letter, j) => {
-              const bubblePosition = origin + (squareSize * (1 + 2 * j)) / 6
-
-              const position =
-                which === TOP || which === BOTTOM
-                  ? { x: bubblePosition, y: sidePosition }
-                  : { x: sidePosition, y: bubblePosition }
-
+          <g>
+            {nodes.map(({ letter, position, labelOffset, labelAlignment }, i) => {
+              const isUsed = usedLetters.includes(letter)
               return (
-                <g key={`${i}_${j}`} onClick={() => dispatch({ type: 'ADD', letter })}>
+                <g key={`${i}`} onClick={() => dispatch({ type: 'ADD', letter })}>
                   {/* white circle with black border */}
                   <circle
                     cx={position.x}
                     cy={position.y}
-                    r={bubbleSize}
-                    fill="white"
-                    stroke="black"
+                    r={nodeSize}
+                    fill={isUsed ? 'black' : 'white'}
+                    stroke={isUsed ? 'white' : 'black'}
                     strokeWidth={stroke}
                   />
                   {/* letter */}
                   <text
-                    x={position.x + xOffset}
-                    y={position.y + yOffset}
+                    x={position.x + labelOffset.x}
+                    y={position.y + labelOffset.y}
+                    className={cx('font-sans font-semibold')}
                     style={{ fontSize: letterSize, lineHeight: 1 }}
-                    textAnchor={textAnchor}
-                    className={`font-sans font-semibold fill-white`}
+                    fill={isUsed ? 'black' : 'white'}
+                    textAnchor={labelAlignment}
                   >
                     {letter}
                   </text>
                 </g>
               )
-            })
-          })}
+            })}
+          </g>
         </svg>
       </div>
     </div>
   )
 }
 
-const Confetti = () => (
-  <_Confetti
-    recycle={false}
-    gravity={0.9}
-    initialVelocityY={-20}
-    tweenDuration={500}
-    colors={range(15).map(i => `#ffffff${(i * 17).toString(16)}`)}
-  />
-)
-
 type Props = {
   layout: Layout
+}
+
+type Node = {
+  letter: string
+  position: { x: number; y: number }
+  labelOffset: { x: number; y: number }
+  labelAlignment: 'start' | 'middle' | 'end'
 }

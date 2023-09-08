@@ -10,7 +10,7 @@ export const App = () => {
   console.log(solution)
 
   return (
-    <div className="flex flex-col items-center h-screen bg-background">
+    <div className="flex flex-col items-center h-screen bg-pink">
       <div className="container auto-mx flex flex-col items-center max-w-xl ">
         <Game layout={layout} />
       </div>

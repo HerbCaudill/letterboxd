@@ -3,7 +3,7 @@ import { candidateWords, noAdjacentLetters, solvePuzzle, wordsOnlyContaining } f
 
 describe('wordsOnlyContaining', () => {
   it('should contain words that only have the given letters', () => {
-    const letters = new Set('AGIBEULTZNSX'.split(''))
+    const letters = new Set('AGIBEULTZNSX')
     const candidates = wordsOnlyContaining(letters)
     expect(candidates).toContain('NEXUS')
     expect(candidates).toContain('STABILIZING')

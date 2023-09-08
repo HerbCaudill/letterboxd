@@ -33,4 +33,4 @@ export const noAdjacentLetters = (word: string, layout: Layout) => {
  * @returns
  */
 export const wordsOnlyContaining = (letters: Set<string>) =>
-  allWords.filter(word => word.split('').every(letter => letters.has(letter)))
+  allWords.filter(word => Array.from(word).every(letter => letters.has(letter)))

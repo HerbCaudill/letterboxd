@@ -6,22 +6,30 @@ import { makeRandom } from '@herbcaudill/random'
 const random = makeRandom()
 
 export const reducer: Reducer<State, Action> = (state, action) => {
-  state.message = undefined
-
   switch (action.type) {
     case 'ADD': {
-      // add letter to current word, if allowed
+      // If we've found a solution, start over
+      if (state.message?.type === 'FOUND_SOLUTION')
+        return {
+          ...state,
+          words: [],
+          currentWord: action.letter,
+          message: undefined,
+        }
+      // Add letter to current word, if allowed
       if (nextLetterCanBe(action.letter, state))
         return {
           ...state,
           currentWord: state.currentWord + action.letter,
+          message: undefined,
         }
       break
     }
 
     case 'DELETE': {
+      state.message = undefined
       if (state.words.length === 0) {
-        // this is the only word, so we can delete the last letter,
+        // This is the only word, so we can delete the last letter,
         // going all the way back to the beginning
         return {
           ...state,
@@ -29,8 +37,9 @@ export const reducer: Reducer<State, Action> = (state, action) => {
         }
       } else {
         if (state.currentWord.length === 1) {
-          // if there's just one letter, it has to be the same as the last letter of the previous
-          // word; so we discard this word and go back to the previous one
+          // If there's just one letter, it has to be the same as the last letter of the previous
+          // word, so we can't just backspace this letter and let the user enter a different one.
+          // Instead we discard this word and go back to the previous one
           const currentWord = state.words[state.words.length - 1]
           const words = state.words.slice(0, -1)
           return {
@@ -62,7 +71,11 @@ export const reducer: Reducer<State, Action> = (state, action) => {
             words,
             currentWord: '',
             message: {
-              text: `You found a solution in ${words.length} words!`,
+              text: (
+                <>
+                  You found a solution in <b>{words.length}</b> words!
+                </>
+              ),
               type: 'FOUND_SOLUTION',
             },
           }
@@ -74,10 +87,7 @@ export const reducer: Reducer<State, Action> = (state, action) => {
             words,
             currentWord: lastLetter(state.currentWord),
             message: {
-              text:
-                state.currentWord.length < 7
-                  ? random.pick(['Nice!', 'Awesome!', 'Sweet!'])
-                  : random.pick(['Genius!', 'Amazing!', 'Incredible!']),
+              text: getCongratulatoryMessage(state.currentWord.length),
               type: 'FOUND_WORD',
             },
           }
@@ -95,6 +105,7 @@ export const reducer: Reducer<State, Action> = (state, action) => {
         ...state,
         words: [],
         currentWord: '',
+        message: undefined,
       }
     }
   }
@@ -117,6 +128,13 @@ const nextLetterCanBe = (letter: string, state: State) => {
   const prevLetterSide = state.layout.find(side => side.has(prevLetter))
   return !prevLetterSide?.has(letter)
 }
+
+const getCongratulatoryMessage = (length: number) =>
+  length < 4
+    ? random.pick(['OK', 'Not bad'])
+    : length < 7
+    ? random.pick(['Nice!', 'Awesome!', 'Sweet!'])
+    : random.pick(['Genius!!', 'Amazing!!', 'Incredible!!'])
 
 type ValidationResult =
   | {
