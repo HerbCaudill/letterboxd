@@ -15,16 +15,16 @@ export const App = ({ layout }: Props) => {
     currentWord: '',
   })
 
+  const add = (letter: string) => dispatch({ type: 'ADD', letter: letter.toUpperCase() })
+  const backspace = () => dispatch({ type: 'BACKSPACE' })
+  const enter = () => dispatch({ type: 'ENTER' })
+  const restart = () => dispatch({ type: 'RESTART' })
+
   useKeyboard(({ key }: KeyboardEvent) => {
-    if (isAlpha(key)) {
-      dispatch({ type: 'ADD', letter: key.toUpperCase() })
-    } else if (key === 'Delete' || key === 'Backspace') {
-      dispatch({ type: 'DELETE' })
-    } else if (key === 'Enter' || key === ' ') {
-      dispatch({ type: 'ENTER' })
-    } else if (key === 'Escape') {
-      dispatch({ type: 'RESTART' })
-    }
+    if (isAlpha(key)) add(key)
+    else if (key === 'Delete' || key === 'Backspace') backspace()
+    else if (key === 'Enter' || key === ' ') enter()
+    else if (key === 'Escape') restart()
   })
 
   return (
@@ -44,8 +44,19 @@ export const App = ({ layout }: Props) => {
             layout={state.layout}
             words={state.words}
             currentWord={state.currentWord}
-            onAdd={letter => dispatch({ type: 'ADD', letter })}
+            onAdd={letter => add(letter)}
           />
+        </div>
+        <div className="flex gap-8 justify-center">
+          <button className="button" onClick={restart}>
+            Restart
+          </button>
+          <button className="button" onClick={backspace}>
+            Delete
+          </button>
+          <button className="button" onClick={enter}>
+            Enter
+          </button>
         </div>
       </div>
     </div>

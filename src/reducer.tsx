@@ -28,7 +28,7 @@ export const reducer: Reducer<State, Action> = (state, action) => {
       break
     }
 
-    case 'DELETE': {
+    case 'BACKSPACE': {
       state.message = undefined
       if (state.words.length === 0) {
         // This is the only word, so we can delete the last letter,
@@ -163,7 +163,7 @@ export type Action =
       type: 'ADD'
       letter: string
     }
-  | { type: 'DELETE' }
+  | { type: 'BACKSPACE' }
   | { type: 'ENTER' }
   | { type: 'RESTART' }
 
