@@ -3,6 +3,9 @@ import { reducer } from 'reducer'
 import { Layout, State } from 'types'
 import { useKeyboard } from 'hooks/useKeyboard'
 import { isAlpha } from 'lib/isAlpha'
+import cx from 'classnames'
+import _Confetti from 'react-confetti'
+import { range } from 'lib/range'
 
 // constants
 const size = 450
@@ -32,20 +35,20 @@ export const Game = ({ layout }: Props) => {
   useKeyboard(({ key }: KeyboardEvent) => {
     if (isAlpha(key)) dispatch({ type: 'ADD', letter: key.toUpperCase() })
     else if (key === 'Delete' || key === 'Backspace') dispatch({ type: 'DELETE' })
-    else if (key === 'Enter') dispatch({ type: 'ENTER' })
-    else if (key === 'Esc') dispatch({ type: 'RESTART' })
+    else if (key === 'Enter' || key === ' ') dispatch({ type: 'ENTER' })
+    else if (key === 'Escape') dispatch({ type: 'RESTART' })
   })
 
   return (
-    <div className="flex flex-col w-full items-center py-12 max-w-sm select-none border">
+    <div className="flex flex-col w-full items-center py-12 max-w-sm select-none">
       {/* Input */}
       <div
-        className={`
-          flex justify-center content-center items-center w-full h-12 
-          ${state.message?.type === 'ERROR' ? 'animate-shake' : ''}
-          `}
+        className={cx('flex justify-center content-center items-center w-full h-12', {
+          'animate-shake': state.message?.type === 'ERROR',
+        })}
         style={{ borderBottom: '3px solid black', height: letterSize * 2 }}
       >
+        {/* letters */}
         <div className="font-bold" style={{ fontSize: letterSize, lineHeight: 1 }}>
           {state.currentWord}
         </div>
@@ -54,6 +57,28 @@ export const Game = ({ layout }: Props) => {
           className="bg-black animate-blink ml-1"
           style={{ top: 3, width: 3, height: letterSize }}
         />
+      </div>
+
+      {/* Message */}
+      {state.message?.type === 'FOUND_SOLUTION' && <Confetti />}
+      <div className="flex justify-center items-center mt-2 h-10 relative ">
+        {state.message && (
+          <div
+            className={cx(
+              'absolute bottom-[10px]',
+              'font-semibold whitespace-nowrap text-center text-sm tracking-wide',
+              'py-1 px-4 rounded border border-black',
+              {
+                'animate-rise opacity-0': state.message.type !== 'FOUND_SOLUTION',
+                'animate-celebrate': state.message.type === 'FOUND_SOLUTION',
+                'bg-black text-white': state.message.type === 'ERROR',
+                'bg-white text-black': state.message.type !== 'ERROR',
+              }
+            )}
+          >
+            {state.message.text}
+          </div>
+        )}
       </div>
 
       {/* Found words */}
@@ -66,27 +91,13 @@ export const Game = ({ layout }: Props) => {
             {
               // add dash after all but last word
               i < state.words.length - 1 && (
-                <div className="text-white text-sm font-bold">&ndash;</div>
+                <div key={`${i}-`} className="text-white text-sm font-bold">
+                  &ndash;
+                </div>
               )
             }
           </>
         ))}
-      </div>
-
-      {/* Message */}
-      <div className="flex justify-center items-center mt-2 h-10 relative ">
-        {state.message && (
-          <div
-            className={`
-              absolute opacity-0 animate-pop 
-              font-semibold whitespace-nowrap text-center text-sm tracking-wide
-              ${state.message.type === 'ERROR' ? 'bg-black text-white' : 'bg-white text-black'}
-              py-1 px-4
-              rounded border border-black `}
-          >
-            {state.message.text}
-          </div>
-        )}
       </div>
 
       {/* Board */}
@@ -175,6 +186,16 @@ export const Game = ({ layout }: Props) => {
     </div>
   )
 }
+
+const Confetti = () => (
+  <_Confetti
+    recycle={false}
+    gravity={0.9}
+    initialVelocityY={-20}
+    tweenDuration={500}
+    colors={range(15).map(i => `#ffffff${(i * 17).toString(16)}`)}
+  />
+)
 
 type Props = {
   layout: Layout

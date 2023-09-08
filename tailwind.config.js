@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require('tailwindcss/colors')
+const { getAllJSDocTagsOfKind } = require('typescript')
 
 const emoji = 'Segoe UI Emoji'
 const mono = 'IBM Plex Mono'
@@ -17,6 +18,7 @@ module.exports = {
         condensed: [condensed, emoji, 'sans-serif'],
         serif: [serif, emoji, 'serif'],
       },
+
       colors: {
         background: '#FAA6A4',
         primary: colors.blue,
@@ -26,6 +28,7 @@ module.exports = {
         warning: colors.orange,
         danger: colors.red,
       },
+
       fontWeight: {
         thin: 100,
         extralight: 200,
@@ -37,6 +40,7 @@ module.exports = {
         extrabold: 800,
         black: 900,
       },
+
       keyframes: {
         blink: {
           'from, to': { opacity: 1 },
@@ -48,12 +52,19 @@ module.exports = {
           '30%, 50%, 70%': { transform: 'translate3d(-3px, 0, 0)' },
           '40%, 60%': { transform: 'translate3d(3px, 0, 0)' },
         },
-        pop: {
+        rise: {
           from: { opacity: 0, bottom: '0px' },
           '20%': { opacity: 1 },
           '80%': { opacity: 1 },
-          to: { opacity: 0, bottom: '15px' },
+          to: { opacity: 0, bottom: '10px' },
         },
+
+        celebrate: {
+          from: { opacity: 0, transform: 'scale(1)' },
+          '50%': { opacity: 1, transform: 'scale(1.1)' },
+          to: { opacity: 1, transform: 'scale(1)' },
+        },
+
         float: {
           from: { opacity: 0, bottom: '8px' },
           '50%': { opacity: 1 },
@@ -61,9 +72,11 @@ module.exports = {
           to: { opacity: 0, bottom: '23px' },
         },
       },
+
       animation: {
         blink: '1000ms blink step-end infinite',
-        pop: '1000ms pop ease-out',
+        rise: '1000ms rise ease-out',
+        celebrate: '1000ms celebrate',
         shake: '500ms shake',
       },
     },
