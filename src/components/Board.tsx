@@ -12,10 +12,10 @@ const sides = [TOP, RIGHT, BOTTOM, LEFT]
 export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
   const size = 100 // doesn't matter, will be scaled to fit container
   const squareSize = size * 0.7
-  const letterSize = size * 0.055
+  const letterSize = size * 0.08
   const origin = (size - squareSize) / 2
   const nodeSize = letterSize * 0.3
-  const stroke = letterSize * 0.1
+  const stroke = letterSize * 0.135
   const labelOffsetAmount = 0.7
 
   const nodes = layout.flatMap((letters, i) => {

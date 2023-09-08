@@ -29,7 +29,7 @@ export const App = ({ layout }: Props) => {
 
   return (
     <div className="flex flex-col items-center h-screen bg-pink">
-      <div className="py-12 px-4 container auto-mx flex flex-col max-w-lg gap-2 select-none ">
+      <div className="py-12 px-8 container auto-mx flex flex-col max-w-lg gap-3 select-none ">
         <div className="h-12 w-full">
           <WordInput currentWord={state.currentWord} isError={state.message?.type === 'ERROR'} />
         </div>
@@ -39,7 +39,7 @@ export const App = ({ layout }: Props) => {
         <div className="h-10 ">
           <FoundWords words={state.words} />
         </div>
-        <div>
+        <div className="sm:p-4 md:p-12">
           <Board
             layout={state.layout}
             words={state.words}
@@ -73,7 +73,7 @@ export const App = ({ layout }: Props) => {
               enter()
             }}
           >
-            Enter
+            g Enter
           </button>
         </div>
       </div>
