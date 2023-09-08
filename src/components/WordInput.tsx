@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { letterSize } from './Game'
+import { letterSize } from './Board'
 
 export const WordInput = ({ currentWord, isError }: { currentWord: string; isError: boolean }) => {
   return (

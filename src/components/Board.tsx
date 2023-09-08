@@ -5,7 +5,7 @@ import { Layout } from 'types'
 const size = 450
 const squareSize = size * 0.6
 const origin = (size - squareSize) / 2
-const letterSize = squareSize * 0.11
+export const letterSize = squareSize * 0.11
 const nodeSize = letterSize * 0.3
 const stroke = letterSize * 0.1
 const labelOffsetAmount = 0.7
