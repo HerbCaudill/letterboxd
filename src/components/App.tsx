@@ -48,13 +48,31 @@ export const App = ({ layout }: Props) => {
           />
         </div>
         <div className="flex gap-8 justify-center">
-          <button className="button" onClick={restart}>
+          <button
+            className="button"
+            onClick={e => {
+              e.currentTarget.blur()
+              restart()
+            }}
+          >
             Restart
           </button>
-          <button className="button" onClick={backspace}>
+          <button
+            className="button"
+            onClick={e => {
+              e.currentTarget.blur()
+              backspace()
+            }}
+          >
             Delete
           </button>
-          <button className="button" onClick={enter}>
+          <button
+            className="button"
+            onClick={e => {
+              e.currentTarget.blur()
+              enter()
+            }}
+          >
             Enter
           </button>
         </div>
