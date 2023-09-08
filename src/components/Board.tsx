@@ -115,6 +115,7 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
       {/* lines linking letters in previous words */}
       {words.map((word, i) => (
         <polyline
+          key={`word-${i}`}
           fill="none"
           className="stroke-pink"
           strokeWidth={stroke * 1.5}

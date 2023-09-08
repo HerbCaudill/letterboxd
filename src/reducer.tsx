@@ -13,7 +13,9 @@ export const reducer: Reducer<State, Action> = (state, action) => {
         return {
           ...state,
           words: [],
-          currentWord: action.letter,
+          currentWord: state.layout.some(letters => letters.has(action.letter))
+            ? action.letter
+            : '',
           message: undefined,
         }
       // Add letter to current word, if allowed
