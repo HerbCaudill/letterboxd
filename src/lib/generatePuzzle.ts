@@ -4,17 +4,15 @@ import { distinctLetterCount } from './words'
 import { generateLayout } from './generateLayout'
 import { Puzzle } from 'types'
 
-export const generatePuzzle = (seed = Math.random().toString()) => {
+export const generatePuzzle = (seed = Math.random().toString()): Puzzle => {
   const random = makeRandom(seed)
-  while (true) {
-    const solution = generateRandomSolution(seed)
-    try {
-      const layout = generateLayout(solution, seed)
-      return { solution, layout } as Puzzle
-    } catch (e) {
-      // if we can't find a valid layout, we'll just try again with a new seed
-      seed = random.alpha(10)
-    }
+  const solution = generateRandomSolution(seed)
+  try {
+    const layout = generateLayout(solution, seed)
+    return { solution, layout } as Puzzle
+  } catch (e) {
+    // if we can't find a valid layout, we'll just try again with a new seed
+    return generatePuzzle(random.alpha(10))
   }
 }
 
