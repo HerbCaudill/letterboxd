@@ -39,7 +39,7 @@ export const App = ({ layout }: Props) => {
         <div className="h-10">
           <MessageDisplay message={state.message} wordCount={state.words.length} />
         </div>
-        <div className="sm:p-4 md:p-12">
+        <div className="p-12">
           <Board
             layout={state.layout}
             words={state.words}
