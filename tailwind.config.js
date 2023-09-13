@@ -8,6 +8,8 @@ const sans = 'Libre Franklin Variable'
 const condensed = 'IBM Plex Sans Condensed'
 const serif = 'IBM Plex Serif'
 
+const pink = '#FAA6A4'
+
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
@@ -20,7 +22,7 @@ module.exports = {
       },
 
       colors: {
-        pink: '#FAA6A4',
+        pink,
         primary: colors.blue,
         secondary: colors.teal,
         neutral: colors.gray,

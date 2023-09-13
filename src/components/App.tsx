@@ -33,13 +33,13 @@ export const App = ({ layout }: Props) => {
         <div className="h-10 ">
           <FoundWords words={state.words} />
         </div>
-        <div className="h-12 w-full">
+        <div className="h-12 w-full px-4">
           <WordInput currentWord={state.currentWord} isError={state.message?.type === 'ERROR'} />
         </div>
         <div className="h-10">
           <MessageDisplay message={state.message} wordCount={state.words.length} />
         </div>
-        <div className="p-12">
+        <div className="p-4 sm:p-12">
           <Board
             layout={state.layout}
             words={state.words}
