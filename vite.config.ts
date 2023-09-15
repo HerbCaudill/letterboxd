@@ -22,12 +22,9 @@ const pwaOptions: Partial<VitePWAOptions> = {
     background_color: '#FAA6A4',
     display: 'standalone',
     icons: [
-      {
-        src: 'logo.svg',
-        sizes: '48x48 72x72 96x96 128x128 256x256 512x512',
-        type: 'image/svg+xml',
-        purpose: 'any',
-      },
+      { src: 'favicon-64x64.png', sizes: '64x64', type: 'image/png', purpose: 'any maskable' },
+      { src: 'favicon-128x128.png', sizes: '128x128', type: 'image/png', purpose: 'any maskable' },
+      { src: 'favicon-256x256.png', sizes: '256x256', type: 'image/png', purpose: 'any maskable' },
     ],
   },
   devOptions: {
