@@ -149,17 +149,7 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
         {nodes.map(({ letter, position, labelOffset, labelAlignment, target }, i) => {
           const isUsed = usedLetters.includes(letter)
           return (
-            <g key={`${i}`} pointerEvents="boundingBox" onClick={() => onAdd(letter)}>
-              {/* click target */}
-              <rect
-                x={target.x}
-                y={target.y}
-                width={target.width}
-                height={target.height}
-                stroke="none"
-                fill="transparent"
-                pointerEvents="all"
-              />
+            <g key={`${i}`}>
               {/* white circle with black border */}
               <circle
                 cx={position.x}
@@ -180,6 +170,18 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
               >
                 {letter}
               </text>
+
+              {/* click target */}
+              <rect
+                pointerEvents="bounding-box"
+                onClick={() => onAdd(letter)}
+                x={target.x}
+                y={target.y}
+                width={target.width}
+                height={target.height}
+                stroke="none"
+                fill="transparent"
+              />
             </g>
           )
         })}
