@@ -28,11 +28,6 @@ const pwaOptions: Partial<VitePWAOptions> = {
       { src: 'favicon-256.png', sizes: '256x256', type: 'image/png', purpose: 'any maskable' },
     ],
   },
-  devOptions: {
-    enabled: false,
-    type: 'module',
-    navigateFallback: 'index.html',
-  },
 }
 
 export default defineConfig({
@@ -41,12 +36,6 @@ export default defineConfig({
   worker: {
     format: 'es',
     plugins: [],
-  },
-
-  server: {
-    fs: {
-      strict: false,
-    },
   },
 
   test: {
