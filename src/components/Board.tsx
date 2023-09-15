@@ -54,11 +54,13 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
     return Array.from(letters).map((letter, j) => {
       const nodePosition = origin + (squareSize * (1 + 2 * j)) / 6
 
+      // position of the center of the little circle
       const position =
         which === TOP || which === BOTTOM
           ? { x: nodePosition, y: sidePosition }
           : { x: sidePosition, y: nodePosition }
 
+      // position & dimensions of a rect that will serve as click target for this node
       const target = {
         x:
           position.x -
@@ -179,8 +181,7 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
                 y={target.y}
                 width={target.width}
                 height={target.height}
-                stroke="none"
-                fill="transparent"
+                className="fill-transparent stroke-none focus:fill-transparent active:fill-transparent"
               />
             </g>
           )
