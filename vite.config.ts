@@ -8,6 +8,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
   mode: 'production',
   includeAssets: ['favicon.ico'],
   srcDir: 'src',
+  filename: 'sw.ts',
   registerType: 'autoUpdate',
   strategies: 'injectManifest',
   injectManifest: {
