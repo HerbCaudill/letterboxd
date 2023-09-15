@@ -176,7 +176,10 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
               {/* click target */}
               <rect
                 pointerEvents="bounding-box"
-                onClick={() => onAdd(letter)}
+                onClick={e => {
+                  e.preventDefault()
+                  onAdd(letter)
+                }}
                 x={target.x}
                 y={target.y}
                 width={target.width}
