@@ -14,8 +14,9 @@ export const MessageDisplay = ({ message, wordCount }: Props) => {
       <div className="flex justify-center items-center mt-2 h-10 relative ">
         <div
           className={cx(
+            'Message',
             'absolute bottom-[10px]',
-            'font-semibold whitespace-nowrap text-center text-sm tracking-wide',
+            'whitespace-nowrap text-center text-sm tracking-wide',
             'py-1 px-4 rounded border border-black',
             {
               'animate-rise opacity-0': !gameOver,
@@ -24,6 +25,7 @@ export const MessageDisplay = ({ message, wordCount }: Props) => {
               'bg-white text-black': !error,
             }
           )}
+          style={{ transform: 'scale3d(1,1,1)' }}
         >
           {message.text}
         </div>

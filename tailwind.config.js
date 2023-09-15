@@ -4,7 +4,7 @@ const { getAllJSDocTagsOfKind } = require('typescript')
 
 const emoji = 'Segoe UI Emoji'
 const mono = 'IBM Plex Mono'
-const sans = 'Libre Franklin Variable'
+const sans = 'IBM Plex Sans' // 'Libre Franklin Variable'
 const condensed = 'IBM Plex Sans Condensed'
 const serif = 'IBM Plex Serif'
 
@@ -57,14 +57,12 @@ module.exports = {
         rise: {
           from: { opacity: 0, bottom: '0px' },
           '20%': { opacity: 1 },
-          '80%': { opacity: 1 },
-          to: { opacity: 0, bottom: '10px' },
+          '60%': { opacity: 1, bottom: '15px' },
+          to: { opacity: 0, bottom: '15px' },
         },
 
         celebrate: {
-          from: { opacity: 0, transform: 'scale(1)' },
-          '50%': { opacity: 1, transform: 'scale(1.1)' },
-          to: { opacity: 1, transform: 'scale(1)' },
+          '50%': { opacity: 1, transform: 'scale(1.5) rotate(3deg)' },
         },
 
         float: {
@@ -76,9 +74,9 @@ module.exports = {
       },
 
       animation: {
-        blink: '1000ms blink step-end infinite',
-        rise: '1000ms rise ease-out',
-        celebrate: '1000ms celebrate',
+        blink: '1s blink step-end infinite',
+        rise: '2s rise ease-out',
+        celebrate: '1s celebrate ease-in-out',
         shake: '500ms shake',
       },
     },

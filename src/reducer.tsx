@@ -75,7 +75,7 @@ export const reducer: Reducer<State, Action> = (state, action) => {
             message: {
               text: (
                 <>
-                  You found a solution in <b>{words.length}</b> words!
+                  You found a solution in <strong>{words.length}</strong> words!
                 </>
               ),
               type: 'FOUND_SOLUTION',

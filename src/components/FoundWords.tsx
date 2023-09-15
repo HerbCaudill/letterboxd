@@ -8,7 +8,7 @@ export const FoundWords = ({ words }: { words: string[] }) => {
           <div className="text-md tracking-wide font-sans">{word}</div>
           {
             // add dash after all but last word
-            i < words.length - 1 && <div className="text-white text-sm font-bold">&ndash;</div>
+            i < words.length - 1 && <div className="text-white font-bold">&ndash;</div>
           }
         </Fragment>
       ))}
