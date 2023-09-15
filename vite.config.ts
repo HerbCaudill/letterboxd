@@ -12,7 +12,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
   strategies: 'injectManifest',
   injectManifest: {
-    globPatterns: ['**/*.{js,css,html,ico,json,svg}'],
+    globPatterns: ['**/*.{js,css,html,ico,png,json,svg}'],
   },
   manifest: {
     name: 'Letterboxd',
@@ -24,6 +24,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     icons: [
       { src: 'favicon-64.png', sizes: '64x64', type: 'image/png', purpose: 'any maskable' },
       { src: 'favicon-128.png', sizes: '128x128', type: 'image/png', purpose: 'any maskable' },
+      { src: 'favicon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
       { src: 'favicon-256.png', sizes: '256x256', type: 'image/png', purpose: 'any maskable' },
     ],
   },
@@ -36,6 +37,18 @@ const pwaOptions: Partial<VitePWAOptions> = {
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), vitePWA(pwaOptions)],
+
+  worker: {
+    format: 'es',
+    plugins: [],
+  },
+
+  server: {
+    fs: {
+      strict: false,
+    },
+  },
+
   test: {
     globals: true,
     environment: 'happy-dom',

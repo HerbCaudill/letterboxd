@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable no-await-in-loop */
-
-import { clientsClaim } from 'workbox-core'
+import { clientsClaim, skipWaiting } from 'workbox-core'
 import {
   cleanupOutdatedCaches,
   createHandlerBoundToURL,
@@ -20,5 +17,5 @@ cleanupOutdatedCaches()
 // to allow work offline
 registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html')))
 
-// self.skipWaiting()
+skipWaiting()
 clientsClaim()
