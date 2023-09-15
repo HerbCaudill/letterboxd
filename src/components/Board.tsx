@@ -151,7 +151,13 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
         {nodes.map(({ letter, position, labelOffset, labelAlignment, target }, i) => {
           const isUsed = usedLetters.includes(letter)
           return (
-            <g key={`${i}`}>
+            <g
+              key={`${i}`}
+              pointerEvents="bounding-box"
+              onMouseDown={e => {
+                onAdd(letter)
+              }}
+            >
               {/* white circle with black border */}
               <circle
                 cx={position.x}
@@ -175,16 +181,11 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
 
               {/* click target */}
               <rect
-                pointerEvents="bounding-box"
-                onClick={e => {
-                  e.preventDefault()
-                  onAdd(letter)
-                }}
                 x={target.x}
                 y={target.y}
                 width={target.width}
                 height={target.height}
-                className="fill-transparent stroke-none focus:fill-transparent active:fill-transparent"
+                className="fill-transparent stroke-transparent"
               />
             </g>
           )
