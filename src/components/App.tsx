@@ -51,7 +51,6 @@ export const App = ({ layout }: Props) => {
           <button
             className="button"
             onClick={e => {
-              e.currentTarget.blur()
               restart()
             }}
           >
