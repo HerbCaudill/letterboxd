@@ -22,31 +22,14 @@ const pwaOptions: Partial<VitePWAOptions> = {
     background_color: '#FAA6A4',
     display: 'standalone',
     icons: [
-      {
-        src: 'favicon.svg',
-        sizes: '64x64 128x128 192x192 256x256 512x512 1024x1024',
-        type: 'image/svg+xml',
-      },
-      { src: 'favicon-64.png', sizes: '64x64', type: 'image/png', purpose: 'any maskable' },
-      { src: 'favicon-128.png', sizes: '128x128', type: 'image/png', purpose: 'any maskable' },
-      { src: 'favicon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
-      { src: 'favicon-256.png', sizes: '256x256', type: 'image/png', purpose: 'any maskable' },
+      { src: 'favicon.svg', sizes: '1024x1024', type: 'image/svg+xml', purpose: 'any' },
+      { src: 'favicon-solid.png', sizes: '1024x1024', type: 'image/png', purpose: 'any' },
+      { src: 'favicon.png', sizes: '1024x1024', type: 'image/png', purpose: 'maskable' },
     ],
   },
 }
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), vitePWA(pwaOptions)],
-
-  worker: {
-    format: 'es',
-    plugins: [],
-  },
-
-  test: {
-    globals: true,
-    environment: 'happy-dom',
-    setupFiles: '.vitest/setup',
-    include: ['**/*.test.{ts,tsx}'],
-  },
+  worker: { format: 'es' },
 })
