@@ -17,6 +17,7 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
   const nodeSize = letterSize * 0.3
   const stroke = letterSize * 0.135
   const labelOffsetAmount = 0.7
+  const targetSize = letterSize * 4
 
   const nodes = layout.flatMap((letters, i) => {
     const which = sides[i]
@@ -58,11 +59,31 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
           ? { x: nodePosition, y: sidePosition }
           : { x: sidePosition, y: nodePosition }
 
+      const target = {
+        x:
+          position.x -
+          (which === TOP || which === BOTTOM
+            ? targetSize / 4
+            : which === LEFT
+            ? (targetSize * 3) / 4
+            : targetSize / 4),
+        y:
+          position.y -
+          (which === LEFT || which === RIGHT
+            ? targetSize / 4
+            : which === TOP
+            ? (targetSize * 3) / 4
+            : targetSize / 4),
+        width: targetSize / (which === TOP || which === BOTTOM ? 2 : 1),
+        height: targetSize / (which === TOP || which === BOTTOM ? 1 : 2),
+      }
+
       return {
         letter,
         position,
         labelOffset,
         labelAlignment,
+        target,
       } as Node
     })
   })
@@ -125,10 +146,20 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
       ))}
 
       <g>
-        {nodes.map(({ letter, position, labelOffset, labelAlignment }, i) => {
+        {nodes.map(({ letter, position, labelOffset, labelAlignment, target }, i) => {
           const isUsed = usedLetters.includes(letter)
           return (
-            <g key={`${i}`} onClick={() => onAdd(letter)}>
+            <g key={`${i}`} pointerEvents="boundingBox" onClick={() => onAdd(letter)}>
+              {/* click target */}
+              <rect
+                x={target.x}
+                y={target.y}
+                width={target.width}
+                height={target.height}
+                stroke="none"
+                fill="transparent"
+                pointerEvents="all"
+              />
               {/* white circle with black border */}
               <circle
                 cx={position.x}
@@ -169,4 +200,10 @@ export type Node = {
   position: { x: number; y: number }
   labelOffset: { x: number; y: number }
   labelAlignment: 'start' | 'middle' | 'end'
+  target: {
+    x: number
+    y: number
+    width: number
+    height: number
+  }
 }
