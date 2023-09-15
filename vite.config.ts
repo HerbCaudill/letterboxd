@@ -18,7 +18,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     name: 'Letterboxd',
     short_name: 'Letterboxd',
     description: 'A recreation of the NYT game Letterboxd',
-    theme_color: '#000000',
+    theme_color: '#FAA6A4',
     background_color: '#FAA6A4',
     display: 'standalone',
     icons: [
