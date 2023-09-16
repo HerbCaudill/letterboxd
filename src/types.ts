@@ -16,6 +16,7 @@ export type State = {
   words: string[]
   currentWord: string
   message?: Message
+  history: string[][] // each entry is a list of words that have been found
 }
 
 export type Message = {

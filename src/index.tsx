@@ -2,8 +2,8 @@ import { queryString } from 'lib/queryString'
 import { generatePuzzle } from 'lib/generatePuzzle'
 import { createRoot } from 'react-dom/client'
 import 'tailwindcss/tailwind.css'
-import { App } from 'components/App'
-// import '@fontsource-variable/libre-franklin'
+import { App } from 'components/App.1'
+import '@ibm/plex/css/ibm-plex.css'
 import './index.css'
 import { getUtcDate } from 'lib/getUtcDate'
 import { solvePuzzle } from 'lib/solvePuzzle'
@@ -16,8 +16,6 @@ const root = createRoot(container)
 let seed = String(queryString('date') || getUtcDate())
 const { solution, layout } = generatePuzzle(seed)
 
-const allSolutions = solvePuzzle(layout)
+const solutions = solvePuzzle(layout)
 
-console.log(allSolutions.map(s => (s === solution ? '* ' : '  ') + s).join('\n'))
-
-root.render(<App layout={layout} />)
+root.render(<App layout={layout} solutions={solutions} />)

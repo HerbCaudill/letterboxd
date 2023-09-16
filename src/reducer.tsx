@@ -1,5 +1,5 @@
 import { Reducer } from 'react'
-import { Layout, State } from 'types'
+import { Layout, Message, State } from 'types'
 import { distinctLetterCount, isValid } from './lib/words'
 import { makeRandom } from '@herbcaudill/random'
 
@@ -60,12 +60,17 @@ export const reducer: Reducer<State, Action> = (state, action) => {
     }
 
     case 'ENTER': {
+      // ignore if no word has been started
       if (state.currentWord.length === 0) return state
 
       // check if current word is valid
       const validationResult = validate(state.currentWord)
       if (validationResult.isValid) {
+        // add current word to list of words
         const words = [...state.words, state.currentWord]
+
+        const history = [...state.history, words].filter(removeDuplicates)
+
         // check if we've found a solution
         if (isSolution(words)) {
           return {
@@ -80,10 +85,10 @@ export const reducer: Reducer<State, Action> = (state, action) => {
               ),
               type: 'FOUND_SOLUTION',
             },
+            history,
           }
-        }
-        // start a new word starting with the last letter of the previous word
-        else
+        } else {
+          // start a new word starting with the last letter of the previous word
           return {
             ...state,
             words,
@@ -92,7 +97,9 @@ export const reducer: Reducer<State, Action> = (state, action) => {
               text: getCongratulatoryMessage(state.currentWord.length),
               type: 'FOUND_WORD',
             },
+            history,
           }
+        }
       } else {
         return {
           ...state,
@@ -168,3 +175,9 @@ export type Action =
   | { type: 'RESTART' }
 
 export const lastLetter = (word: string) => (word.length > 0 ? word[word.length - 1] : '')
+
+const isSubset = (a: string[], b: string[]) =>
+  b.length > a.length && b.join('').startsWith(a.join(''))
+
+const removeDuplicates = (sequence: string[], i: number, history: string[][]): boolean =>
+  !history.some(otherSequence => isSubset(sequence, otherSequence))

@@ -171,7 +171,7 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
               <text
                 x={position.x + labelOffset.x}
                 y={position.y + labelOffset.y}
-                className={cx('font-sans font-semibold')}
+                className={cx('font-mono font-semibold')}
                 style={{ fontSize: letterSize, lineHeight: 1 }}
                 fill={isUsed ? 'black' : 'white'}
                 textAnchor={labelAlignment}

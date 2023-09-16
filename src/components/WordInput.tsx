@@ -12,7 +12,7 @@ export const WordInput = ({ currentWord, isError }: { currentWord: string; isErr
       )}
     >
       {/* letters */}
-      <div className="font-bold text-[30px]">{currentWord}</div>
+      <div className="font-condensed font-bold text-[30px] tracking-widest">{currentWord}</div>
       {/* cursor */}
       <div className="bg-black animate-blink ml-1 w-[3px] h-[32px]" />
     </div>

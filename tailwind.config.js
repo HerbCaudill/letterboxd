@@ -2,7 +2,6 @@
 const colors = require('tailwindcss/colors')
 const { getAllJSDocTagsOfKind } = require('typescript')
 
-const emoji = 'Segoe UI Emoji'
 const mono = 'IBM Plex Mono'
 const sans = 'IBM Plex Sans' // 'Libre Franklin Variable'
 const condensed = 'IBM Plex Sans Condensed'
@@ -15,10 +14,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        mono: [mono, emoji, 'monospace'],
-        sans: [sans, emoji, 'sans-serif'],
-        condensed: [condensed, emoji, 'sans-serif'],
-        serif: [serif, emoji, 'serif'],
+        mono: [mono, 'monospace'],
+        sans: [sans, 'sans-serif'],
+        condensed: [condensed, 'sans-serif'],
+        serif: [serif, 'serif'],
       },
 
       colors: {
