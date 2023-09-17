@@ -8,6 +8,15 @@ export const Confetti = () => (
     numberOfPieces={1000}
     initialVelocityY={-20}
     tweenDuration={500}
-    colors={range(15).map(i => `#ffffff${(i * 17).toString(16)}`)}
+    colors={[
+      '#ffffff33',
+      '#ffffff66',
+      '#ffffff99',
+      '#ffffffbb',
+      '#FAA6A4',
+      '#E87E7E',
+      '#FF3833',
+      'E20736',
+    ]}
   />
 )
