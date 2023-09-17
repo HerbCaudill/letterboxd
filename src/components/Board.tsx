@@ -1,8 +1,7 @@
 import cx from 'classnames'
-import { words } from 'lodash'
 import { useContext } from 'react'
-import { Layout } from 'types'
 import { Context } from './ContextProvider'
+import { add } from 'reducer'
 
 // constants
 const TOP = 'TOP'
@@ -156,7 +155,12 @@ export const Board = () => {
         {nodes.map(({ letter, position, labelOffset, labelAlignment, target }, i) => {
           const isUsed = usedLetters.includes(letter)
           return (
-            <g key={`${i}`} pointerEvents="bounding-box" onMouseDown={_ => {}}>
+            <g
+              key={`${i}`}
+              className="cursor-pointer"
+              pointerEvents="bounding-box"
+              onMouseDown={_ => dispatch(add(letter))}
+            >
               {/* white circle with black border */}
               <circle
                 cx={position.x}
