@@ -1,9 +1,19 @@
-import { Reducer } from 'react'
-import { Layout, Message, State } from 'types'
-import { distinctLetterCount, isValid } from './lib/words'
 import { makeRandom } from '@herbcaudill/random'
+import { isSolution } from 'lib/isSolution'
+import { Reducer } from 'react'
+import { Layout, State } from 'types'
+import { isValid } from './lib/words'
 
 const random = makeRandom()
+
+export const initializer = (layout: Layout): State => {
+  return {
+    layout,
+    words: [],
+    currentWord: '',
+    history: [],
+  }
+}
 
 export const reducer: Reducer<State, Action> = (state, action) => {
   switch (action.type) {
@@ -69,7 +79,16 @@ export const reducer: Reducer<State, Action> = (state, action) => {
         // add current word to list of words
         const words = [...state.words, state.currentWord]
 
-        const history = [...state.history, words].filter(removeDuplicates)
+        const history = [...state.history, words]
+          // remove any sequences of words that are contained in other sequences
+          // e.g. if we have 'CAT TOE' AND 'CAT TOE EYE', we can remove 'CAT TOE'
+          .filter((sequence, i, history): boolean => {
+            const a = sequence.join('')
+            return !history.some((otherSequence, j) => {
+              const b = otherSequence.join('')
+              return i !== j && (a === b || b.includes(a))
+            })
+          })
 
         // check if we've found a solution
         if (isSolution(words)) {
@@ -80,6 +99,7 @@ export const reducer: Reducer<State, Action> = (state, action) => {
             message: {
               text: (
                 <>
+                  {words.length === 2 && <span className="text-xl">🎉</span>}
                   You found a solution in <strong>{words.length}</strong> words!
                 </>
               ),
@@ -163,8 +183,6 @@ const validate = (word: string): ValidationResult => {
   return { isValid: true }
 }
 
-const isSolution = (words: string[]) => distinctLetterCount(words.join('')) === 12
-
 export type Action =
   | {
       type: 'ADD'
@@ -176,8 +194,8 @@ export type Action =
 
 export const lastLetter = (word: string) => (word.length > 0 ? word[word.length - 1] : '')
 
-const isSubset = (a: string[], b: string[]) =>
-  b.length > a.length && b.join('').startsWith(a.join(''))
+export const add = (letter: string): Action => ({ type: 'ADD', letter: letter.toUpperCase() })
 
-const removeDuplicates = (sequence: string[], i: number, history: string[][]): boolean =>
-  !history.some(otherSequence => isSubset(sequence, otherSequence))
+export const backspace: Action = { type: 'BACKSPACE' }
+export const enter: Action = { type: 'ENTER' }
+export const restart: Action = { type: 'RESTART' }

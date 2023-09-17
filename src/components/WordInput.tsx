@@ -1,6 +1,12 @@
 import cx from 'classnames'
+import { isError } from 'lodash'
+import { useContext } from 'react'
+import { Context } from './ContextProvider'
 
-export const WordInput = ({ currentWord, isError }: { currentWord: string; isError: boolean }) => {
+export const WordInput = () => {
+  const { state } = useContext(Context)
+  const { currentWord, message } = state
+  const isError = message?.type === 'ERROR'
   return (
     <div
       className={cx(

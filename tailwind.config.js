@@ -7,7 +7,12 @@ const sans = 'IBM Plex Sans' // 'Libre Franklin Variable'
 const condensed = 'IBM Plex Sans Condensed'
 const serif = 'IBM Plex Serif'
 
-const pink = '#FAA6A4'
+const pink = {
+  500: '#FAA6A4',
+  600: '#E87E7E',
+  700: '#FF3833',
+  800: 'E20736',
+}
 
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],

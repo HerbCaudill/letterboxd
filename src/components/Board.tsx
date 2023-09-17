@@ -1,5 +1,8 @@
 import cx from 'classnames'
+import { words } from 'lodash'
+import { useContext } from 'react'
 import { Layout } from 'types'
+import { Context } from './ContextProvider'
 
 // constants
 const TOP = 'TOP'
@@ -9,7 +12,9 @@ const LEFT = 'LEFT'
 
 const sides = [TOP, RIGHT, BOTTOM, LEFT]
 
-export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
+export const Board = () => {
+  const { state, dispatch } = useContext(Context)
+  const { layout, words, currentWord } = state
   const size = 100 // doesn't matter, will be scaled to fit container
   const squareSize = size * 0.7
   const letterSize = size * 0.08
@@ -129,7 +134,7 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
       {/* lines linking letters in current word */}
       <polyline
         fill="none"
-        className="stroke-pink"
+        className="stroke-pink-500"
         strokeWidth={stroke * 1.5}
         strokeDasharray={stroke * 3}
         points={getPoints(currentWord)}
@@ -140,7 +145,7 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
         <polyline
           key={`word-${i}`}
           fill="none"
-          className="stroke-pink"
+          className="stroke-pink-500"
           strokeWidth={stroke * 1.5}
           strokeOpacity={0.8 - (0.6 / words.length) * (words.length - i)}
           points={getPoints(word)}
@@ -151,13 +156,7 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
         {nodes.map(({ letter, position, labelOffset, labelAlignment, target }, i) => {
           const isUsed = usedLetters.includes(letter)
           return (
-            <g
-              key={`${i}`}
-              pointerEvents="bounding-box"
-              onMouseDown={e => {
-                onAdd(letter)
-              }}
-            >
+            <g key={`${i}`} pointerEvents="bounding-box" onMouseDown={_ => {}}>
               {/* white circle with black border */}
               <circle
                 cx={position.x}
@@ -193,13 +192,6 @@ export const Board = ({ layout, words, currentWord, onAdd }: Props) => {
       </g>
     </svg>
   )
-}
-
-type Props = {
-  layout: Layout
-  words: string[]
-  currentWord: string
-  onAdd: (letter: string) => void
 }
 
 export type Node = {
