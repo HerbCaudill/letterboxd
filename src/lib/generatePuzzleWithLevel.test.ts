@@ -1,4 +1,4 @@
-import { generatePuzzleWithLevel, levels } from './generatePuzzleWithLevel'
+import { Level, generatePuzzleWithLevel, levels } from './generatePuzzleWithLevel'
 import { solvePuzzle } from './solvePuzzle'
 
 describe('generatePuzzleWithLevel', () => {
