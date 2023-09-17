@@ -4,8 +4,8 @@ import { range } from 'lib/range'
 export const Confetti = () => (
   <_Confetti
     recycle={false}
-    gravity={0.9}
-    numberOfPieces={1000}
+    gravity={0.7}
+    numberOfPieces={500}
     initialVelocityY={-20}
     tweenDuration={500}
     colors={[
