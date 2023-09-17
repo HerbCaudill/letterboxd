@@ -8,8 +8,6 @@ h2 i {
 
 button {
   @apply inline-flex items-center rounded-full border border-opacity-50 border-black;
-  @apply hover:bg-gray-500 hover:bg-opacity-10;
-  @apply active:bg-white active:bg-opacity-10;
   @apply focus:outline-none focus:ring-0;
   @apply px-5 py-2;
   @apply text-sm font-mono;
