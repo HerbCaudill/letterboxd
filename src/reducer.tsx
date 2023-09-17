@@ -16,10 +16,12 @@ export const initializer = (layout: Layout): State => {
 }
 
 export const reducer: Reducer<State, Action> = (state, action) => {
+  const solutionFound = isSolution(state.words)
+
   switch (action.type) {
     case 'ADD': {
       // If we've found a solution, start over
-      if (state.message?.type === 'FOUND_SOLUTION')
+      if (solutionFound)
         return {
           ...state,
           words: [],
@@ -40,6 +42,14 @@ export const reducer: Reducer<State, Action> = (state, action) => {
 
     case 'BACKSPACE': {
       state.message = undefined
+      if (solutionFound) {
+        // If we've found a solution, start over
+        return {
+          ...state,
+          words: [],
+          currentWord: '',
+        }
+      }
       if (state.words.length === 0) {
         // This is the only word, so we can delete the last letter,
         // going all the way back to the beginning
@@ -47,24 +57,22 @@ export const reducer: Reducer<State, Action> = (state, action) => {
           ...state,
           currentWord: state.currentWord.slice(0, -1),
         }
+      } else if (state.currentWord.length === 1) {
+        // If there's just one letter, it has to be the same as the last letter of the previous
+        // word, so we can't just backspace this letter and let the user enter a different one.
+        // Instead we discard this word and go back to the previous one
+        const currentWord = state.words[state.words.length - 1]
+        const words = state.words.slice(0, -1)
+        return {
+          ...state,
+          words,
+          currentWord,
+        }
       } else {
-        if (state.currentWord.length === 1) {
-          // If there's just one letter, it has to be the same as the last letter of the previous
-          // word, so we can't just backspace this letter and let the user enter a different one.
-          // Instead we discard this word and go back to the previous one
-          const currentWord = state.words[state.words.length - 1]
-          const words = state.words.slice(0, -1)
-          return {
-            ...state,
-            words,
-            currentWord,
-          }
-        } else {
-          // otherwise, we can just delete the last letter of this word
-          return {
-            ...state,
-            currentWord: state.currentWord.slice(0, -1),
-          }
+        // otherwise, we can just delete the last letter of this word
+        return {
+          ...state,
+          currentWord: state.currentWord.slice(0, -1),
         }
       }
     }
@@ -86,7 +94,9 @@ export const reducer: Reducer<State, Action> = (state, action) => {
             const a = sequence.join('')
             return !history.some((otherSequence, j) => {
               const b = otherSequence.join('')
-              return i !== j && (a === b || b.includes(a))
+              if (a === b) return i < j // if there are exact duplicates, remove the earlier one
+              else if (i !== j) return b.includes(a) // if there are subsets, remove the shorter one
+              else return false
             })
           })
 
