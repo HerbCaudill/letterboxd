@@ -22,10 +22,9 @@ describe('wordsOnlyContaining', () => {
   it('should contain only common words if onlyCommonWords is true', () => {
     const letters = new Set('AGIBEULTZNSX')
 
-    const onlyCommonWords = true
-    const candidates = wordsOnlyContaining(letters, onlyCommonWords)
+    const candidates = wordsOnlyContaining(letters, { onlyCommonWords: true })
 
-    expect(candidates.length).toMatchInlineSnapshot('3654')
+    expect(candidates.length).toMatchInlineSnapshot('523')
 
     expect(candidates).toContain('NEXUS')
     expect(candidates).toContain('STABILIZING')
@@ -55,8 +54,9 @@ describe('noAdjacentLetters', () => {
 
 describe('candidateWords', () => {
   it('should only contain words with the given letters and no adjacent letters', () => {
-    const onlyCommonWords = false
-    const candidates = candidateWords(layoutFromString('AGI/BEU/LTZ/NSX'), onlyCommonWords)
+    const candidates = candidateWords(layoutFromString('AGI/BEU/LTZ/NSX'), {
+      onlyCommonWords: false,
+    })
 
     expect(candidates.length).toMatchInlineSnapshot('1872')
 
@@ -68,10 +68,11 @@ describe('candidateWords', () => {
   })
 
   it('should contain only common words if onlyCommonWords is true', () => {
-    const onlyCommonWords = true
-    const candidates = candidateWords(layoutFromString('AGI/BEU/LTZ/NSX'), onlyCommonWords)
+    const candidates = candidateWords(layoutFromString('AGI/BEU/LTZ/NSX'), {
+      onlyCommonWords: true,
+    })
 
-    expect(candidates.length).toMatchInlineSnapshot('1872')
+    expect(candidates.length).toMatchInlineSnapshot('276')
 
     expect(candidates).toContain('NEXUS')
     expect(candidates).toContain('STABILIZING')
@@ -85,8 +86,7 @@ describe('solvePuzzle', () => {
   it('should solve a puzzle with lots of solutions', () => {
     const layout = layoutFromString('AGI/BEU/LTZ/NSX')
 
-    const onlyCommonWords = false
-    const solutions = solvePuzzle(layout, onlyCommonWords)
+    const solutions = solvePuzzle(layout, { onlyCommonWords: false })
 
     expect(solutions.length).toMatchInlineSnapshot('166')
     expect(solutions).toContain('NEXUS STABILIZING')
@@ -95,10 +95,9 @@ describe('solvePuzzle', () => {
   it('should generate fewer solutions if onlyCommonWords is true', () => {
     const layout = layoutFromString('AGI/BEU/LTZ/NSX')
 
-    const onlyCommonWords = true
-    const solutions = solvePuzzle(layout, onlyCommonWords)
+    const solutions = solvePuzzle(layout, { onlyCommonWords: true })
 
-    expect(solutions.length).toMatchInlineSnapshot('166')
+    expect(solutions.length).toMatchInlineSnapshot('1')
     expect(solutions).toContain('NEXUS STABILIZING')
   })
 
