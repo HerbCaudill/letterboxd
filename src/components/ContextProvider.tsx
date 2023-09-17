@@ -16,10 +16,7 @@ if (!Object.keys(levels).includes(level)) level = 'hard'
 const initialState =
   storage.get(date, level) || initializer(generatePuzzleWithLevel(level, date).layout)
 
-export const Context = createContext<ProviderPayload>({
-  state: initialState,
-  dispatch: () => {},
-})
+export const Context = createContext<ProviderPayload>(null!)
 
 export const ContextProvider = ({ children }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState)

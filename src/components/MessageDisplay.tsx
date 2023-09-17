@@ -3,6 +3,7 @@ import { Message } from 'types'
 import { Confetti } from './Confetti'
 import { useContext } from 'react'
 import { Context } from './ContextProvider'
+import { makeRandom } from '@herbcaudill/random'
 
 export const MessageDisplay = () => {
   const { state } = useContext(Context)
@@ -32,9 +33,37 @@ export const MessageDisplay = () => {
           )}
           style={{ transform: 'scale3d(1,1,1)' }}
         >
-          {message.text}
+          {getMessageText(message)}
         </div>
       </div>
     </div>
   )
+}
+
+const getMessageText = (message: Message) => {
+  const random = makeRandom()
+  switch (message.type) {
+    case 'FOUND_WORD': {
+      const length = message.word.length
+      return length < 4
+        ? random.pick(['OK', 'Not bad'])
+        : length < 7
+        ? random.pick(['Nice!', 'Awesome!', 'Sweet!'])
+        : random.pick(['Genius!!', 'Amazing!!', 'Incredible!!'])
+    }
+
+    case 'FOUND_SOLUTION': {
+      const words = message.words
+      return (
+        <>
+          {words.length === 2 && <span className="text-xl">🎉</span>}
+          You found a solution in <strong>{words.length}</strong> words!
+        </>
+      )
+    }
+
+    case 'ERROR': {
+      return message.details
+    }
+  }
 }

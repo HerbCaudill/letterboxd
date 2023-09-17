@@ -9,12 +9,11 @@
   },
   "scripts": {
     "dev": "vite --host --port 3000 --open http://localhost:3000?date=1970-03-16 ",
-    "build:lists": "ts-node --project ./src/scripts/tsconfig.json ./src/scripts/buildWordLists.ts",
     "build": "tsc && vite build",
     "serve": "vite preview",
     "test": "vitest --reporter verbose",
     "test:ui": "vitest --ui",
-    "lint": "eslint src --max-warnings=0",
+    "lint": "eslint src --ma x-warnings=0",
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {

@@ -1,10 +1,10 @@
-import { makeRandom } from '@herbcaudill/random'
+import { lastLetter } from 'lastLetter'
 import { isSolution } from 'lib/isSolution'
+import { validateWord } from 'lib/validateWord'
+import { nextLetterCanBe } from 'nextLetterCanBe'
 import { Reducer } from 'react'
+import { removeDuplicateSequences } from 'removeDuplicateSequences'
 import { Layout, State } from 'types'
-import { isValid } from './lib/words'
-
-const random = makeRandom()
 
 export const initializer = (layout: Layout): State => {
   return {
@@ -16,12 +16,12 @@ export const initializer = (layout: Layout): State => {
 }
 
 export const reducer: Reducer<State, Action> = (state, action) => {
-  const solutionFound = isSolution(state.words)
+  const solutionFoundPreviously = isSolution(state.words)
 
   switch (action.type) {
     case 'ADD': {
       // If we've found a solution, start over
-      if (solutionFound)
+      if (solutionFoundPreviously)
         return {
           ...state,
           words: [],
@@ -42,7 +42,7 @@ export const reducer: Reducer<State, Action> = (state, action) => {
 
     case 'BACKSPACE': {
       state.message = undefined
-      if (solutionFound) {
+      if (solutionFoundPreviously) {
         // If we've found a solution, start over
         return {
           ...state,
@@ -79,61 +79,29 @@ export const reducer: Reducer<State, Action> = (state, action) => {
 
     case 'ENTER': {
       // ignore if no word has been started
-      if (state.currentWord.length === 0) return state
-
+      if (state.currentWord.length === 0) break
+      const words = [...state.words, state.currentWord]
+      const solutionFound = isSolution(words)
       // check if current word is valid
-      const validationResult = validate(state.currentWord)
+      const validationResult = validateWord(state.currentWord)
       if (validationResult.isValid) {
         // add current word to list of words
         const words = [...state.words, state.currentWord]
-
-        const history = [...state.history, words]
-          // remove any sequences of words that are contained in other sequences
-          // e.g. if we have 'CAT TOE' AND 'CAT TOE EYE', we can remove 'CAT TOE'
-          .filter((sequence, i, history): boolean => {
-            const a = sequence.join('')
-            return !history.some((otherSequence, j) => {
-              const b = otherSequence.join('')
-              if (a === b) return i < j // if there are exact duplicates, remove the earlier one
-              else if (i !== j) return b.includes(a) // if there are subsets, remove the shorter one
-              else return false
-            })
-          })
-
-        // check if we've found a solution
-        if (isSolution(words)) {
-          return {
-            ...state,
-            words,
-            currentWord: '',
-            message: {
-              text: (
-                <>
-                  {words.length === 2 && <span className="text-xl">🎉</span>}
-                  You found a solution in <strong>{words.length}</strong> words!
-                </>
-              ),
-              type: 'FOUND_SOLUTION',
-            },
-            history,
-          }
-        } else {
-          // start a new word starting with the last letter of the previous word
-          return {
-            ...state,
-            words,
-            currentWord: lastLetter(state.currentWord),
-            message: {
-              text: getCongratulatoryMessage(state.currentWord.length),
-              type: 'FOUND_WORD',
-            },
-            history,
-          }
+        return {
+          ...state,
+          words,
+          currentWord: solutionFound //
+            ? ''
+            : lastLetter(state.currentWord),
+          message: solutionFound
+            ? { type: 'FOUND_SOLUTION', words }
+            : { type: 'FOUND_WORD', word: state.currentWord },
+          history: removeDuplicateSequences([...state.history, words]),
         }
       } else {
         return {
           ...state,
-          message: { text: validationResult.error, type: 'ERROR' },
+          message: { type: 'ERROR', details: validationResult.error },
         }
       }
     }
@@ -152,60 +120,13 @@ export const reducer: Reducer<State, Action> = (state, action) => {
   return state
 }
 
-/** Checks if a letter that has been typed is valid in context */
-const nextLetterCanBe = (letter: string, state: State) => {
-  letter = letter.toUpperCase()
-
-  // must be one of the letters in the board layout
-  if (!state.layout.some(letters => letters.has(letter))) return false
-
-  // if current word is empty, any letter in the layout is valid
-  if (state.currentWord.length === 0) return true
-
-  // otherwise, letter must be not be on the same side as the previous letter
-  const prevLetter = state.currentWord.slice(-1)
-  const prevLetterSide = state.layout.find(side => side.has(prevLetter))
-  return !prevLetterSide?.has(letter)
-}
-
-const getCongratulatoryMessage = (length: number) =>
-  length < 4
-    ? random.pick(['OK', 'Not bad'])
-    : length < 7
-    ? random.pick(['Nice!', 'Awesome!', 'Sweet!'])
-    : random.pick(['Genius!!', 'Amazing!!', 'Incredible!!'])
-
-type ValidationResult =
-  | {
-      isValid: true
-    }
-  | {
-      isValid: false
-      error: string
-    }
-
-const validate = (word: string): ValidationResult => {
-  if (word.length < 3) {
-    return { isValid: false, error: 'Too short' }
-  } else if (!isValid(word)) {
-    return { isValid: false, error: 'Not a word' }
-  }
-  return { isValid: true }
-}
-
 export type Action =
-  | {
-      type: 'ADD'
-      letter: string
-    }
+  | { type: 'ADD'; letter: string }
   | { type: 'BACKSPACE' }
   | { type: 'ENTER' }
   | { type: 'RESTART' }
 
-export const lastLetter = (word: string) => (word.length > 0 ? word[word.length - 1] : '')
-
 export const add = (letter: string): Action => ({ type: 'ADD', letter: letter.toUpperCase() })
-
 export const backspace: Action = { type: 'BACKSPACE' }
 export const enter: Action = { type: 'ENTER' }
 export const restart: Action = { type: 'RESTART' }

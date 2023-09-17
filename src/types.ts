@@ -19,7 +19,7 @@ export type State = {
   history: string[][] // each entry is a list of words that have been found
 }
 
-export type Message = {
-  text: React.ReactNode
-  type: 'FOUND_WORD' | 'FOUND_SOLUTION' | 'ERROR'
-}
+export type Message =
+  | { type: 'FOUND_WORD'; word: string }
+  | { type: 'FOUND_SOLUTION'; words: string[] }
+  | { type: 'ERROR'; details: string }
