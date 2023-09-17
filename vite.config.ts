@@ -31,5 +31,15 @@ const pwaOptions: Partial<VitePWAOptions> = {
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), vitePWA(pwaOptions)],
-  worker: { format: 'es' },
+  worker: {
+    format: 'es',
+    plugins: [],
+  },
+
+  test: {
+    globals: true,
+    environment: 'happy-dom',
+    setupFiles: '.vitest/setup',
+    include: ['**/*.test.{ts,tsx}'],
+  },
 })

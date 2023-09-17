@@ -1,4 +1,4 @@
-import { generatePuzzle } from 'lib/generatePuzzle'
+import { Level, generatePuzzleWithLevel, levels } from 'lib/generatePuzzleWithLevel'
 import { getUtcDate } from 'lib/getUtcDate'
 import { queryString } from 'lib/queryString'
 import { createContext, useEffect, useReducer } from 'react'
@@ -10,7 +10,11 @@ import { Action, initializer, reducer } from '../reducer'
 // We can also specify a date in the query string to get the puzzle for that date.
 let date = String(queryString('date') || getUtcDate())
 
-const initialState = storage.get(date) || initializer(generatePuzzle(date).layout)
+let level = String(queryString('level')) as Level
+if (!Object.keys(levels).includes(level)) level = 'hard'
+
+const initialState =
+  storage.get(date, level) || initializer(generatePuzzleWithLevel(level, date).layout)
 
 export const Context = createContext<ProviderPayload>({
   state: initialState,
@@ -21,7 +25,7 @@ export const ContextProvider = ({ children }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    storage.set(date, state)
+    storage.set(date, level, state)
   }, [state])
 
   return <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>

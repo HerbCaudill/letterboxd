@@ -7,7 +7,7 @@ export const Solutions = ({ showSolutions, onChange }: Props) => {
   const { state } = useContext(Context)
   const { layout } = state
 
-  const solutions = useMemo(() => solvePuzzle(layout), [layout])
+  const solutions = useMemo(() => solvePuzzle(layout, { onlyCommonWords: true }), [layout])
   return (
     <div>
       {/* heading */}
@@ -26,7 +26,7 @@ export const Solutions = ({ showSolutions, onChange }: Props) => {
               onChange={() => onChange(!showSolutions)}
             />
             <label htmlFor="show-solutions" className="cursor-pointer">
-              Show <b>{solutions.length}</b> solutions
+              Show {solutions.length === 1 ? 'solution' : `${solutions.length} solutions`}
             </label>
           </span>
         </h2>

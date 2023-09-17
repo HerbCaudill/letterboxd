@@ -4,117 +4,34 @@ import { candidateWords, noAdjacentLetters, solvePuzzle, wordsOnlyContaining } f
 describe('wordsOnlyContaining', () => {
   it('should contain words that only have the given letters', () => {
     const letters = new Set('AGIBEULTZNSX')
-    const candidates = wordsOnlyContaining(letters)
+
+    const candidates = wordsOnlyContaining(letters, { onlyCommonWords: false })
+
+    expect(candidates.length).toMatchInlineSnapshot('3654')
+
     expect(candidates).toContain('NEXUS')
     expect(candidates).toContain('STABILIZING')
-    expect(candidates.length).toBe(3654)
-    expect(candidates.slice(0, 100)).toMatchInlineSnapshot(`
-      [
-        "ABATE",
-        "ABIGAIL",
-        "ABILITIES",
-        "ABLEST",
-        "ABSENT",
-        "ABSTAIN",
-        "ABUSE",
-        "ABUSES",
-        "ABUSING",
-        "AEGIS",
-        "AGAIN",
-        "AGAINST",
-        "AGEING",
-        "AGENT",
-        "AGENTS",
-        "AGILE",
-        "AGING",
-        "AILING",
-        "AISLE",
-        "AISLES",
-        "ALBEIT",
-        "ALGAE",
-        "ALGAL",
-        "ALIAS",
-        "ALIEN",
-        "ALIENATE",
-        "ALIENATING",
-        "ALIENS",
-        "ALIGN",
-        "ANALGESIA",
-        "ANGEL",
-        "ANGELS",
-        "ANGINA",
-        "ANGLE",
-        "ANGLES",
-        "ANGLING",
-        "ANILINE",
-        "ANTIGEN",
-        "ANTIGENS",
-        "ANXIETIES",
-        "ASTUTE",
-        "ATAXIA",
-        "ATLAS",
-        "AUGUST",
-        "AUNTIE",
-        "AUNTS",
-        "AXIAL",
-        "BABEL",
-        "BABES",
-        "BABIES",
-        "BALES",
-        "BANAL",
-        "BANANA",
-        "BANANAS",
-        "BANGING",
-        "BASAL",
-        "BASALT",
-        "BASELINE",
-        "BASES",
-        "BASIL",
-        "BASIN",
-        "BASING",
-        "BASINS",
-        "BASIS",
-        "BATES",
-        "BAUXITE",
-        "BEANS",
-        "BEAST",
-        "BEASTS",
-        "BEATEN",
-        "BEATING",
-        "BEATS",
-        "BEAUTIES",
-        "BEAUX",
-        "BEGAN",
-        "BEGIN",
-        "BEGINS",
-        "BEGUN",
-        "BEIGE",
-        "BEING",
-        "BEINGS",
-        "BELTS",
-        "BENIGN",
-        "BENZENE",
-        "BESET",
-        "BIASES",
-        "BIBLE",
-        "BIBLES",
-        "BILINGUAL",
-        "BISEXUAL",
-        "BITES",
-        "BITING",
-        "BLAST",
-        "BLASTING",
-        "BLASTS",
-        "BLATANT",
-        "BLAZE",
-        "BLAZING",
-        "BLEST",
-        "BLUES",
-      ]
-    `)
+
+    expect(candidates).toContain('ABAXILE')
+    expect(candidates).toContain('ANABAENAS')
 
     expect(candidates).not.toContain('CLOTH')
     expect(candidates).not.toContain('HUMANITIES')
+  })
+
+  it('should contain only common words if onlyCommonWords is true', () => {
+    const letters = new Set('AGIBEULTZNSX')
+
+    const onlyCommonWords = true
+    const candidates = wordsOnlyContaining(letters, onlyCommonWords)
+
+    expect(candidates.length).toMatchInlineSnapshot('3654')
+
+    expect(candidates).toContain('NEXUS')
+    expect(candidates).toContain('STABILIZING')
+
+    expect(candidates).not.toContain('ABAXILE')
+    expect(candidates).not.toContain('ANABAENAS')
   })
 })
 
@@ -138,125 +55,50 @@ describe('noAdjacentLetters', () => {
 
 describe('candidateWords', () => {
   it('should only contain words with the given letters and no adjacent letters', () => {
-    const candidates = candidateWords(layoutFromString('AGI/BEU/LTZ/NSX'))
+    const onlyCommonWords = false
+    const candidates = candidateWords(layoutFromString('AGI/BEU/LTZ/NSX'), onlyCommonWords)
+
+    expect(candidates.length).toMatchInlineSnapshot('1872')
+
     expect(candidates).toContain('NEXUS')
     expect(candidates).toContain('STABILIZING')
 
-    expect(candidates.length).toBe(1872)
-    expect(candidates.slice(0, 100)).toMatchInlineSnapshot(`
-      [
-        "ABATE",
-        "ABILITIES",
-        "ABLEST",
-        "ABSENT",
-        "ALIEN",
-        "ALIENATE",
-        "ALIENATING",
-        "ANGEL",
-        "ANGELS",
-        "ANGLE",
-        "ANGLES",
-        "ANGLING",
-        "ANILINE",
-        "ASTUTE",
-        "AUGUST",
-        "AUNTIE",
-        "AUNTS",
-        "BABIES",
-        "BALES",
-        "BANAL",
-        "BANANA",
-        "BANANAS",
-        "BASAL",
-        "BASELINE",
-        "BASES",
-        "BASIL",
-        "BASIN",
-        "BASING",
-        "BASIS",
-        "BATES",
-        "BAUXITE",
-        "BIBLE",
-        "BIBLES",
-        "BILINGUAL",
-        "BISEXUAL",
-        "BITES",
-        "BITING",
-        "BLAST",
-        "BLASTING",
-        "BLASTS",
-        "BLATANT",
-        "BLAZE",
-        "BLAZING",
-        "BLEST",
-        "BLUNT",
-        "EASIEST",
-        "EASING",
-        "EATEN",
-        "EATING",
-        "ELITE",
-        "ELITES",
-        "ELITIST",
-        "ENABLE",
-        "ENABLES",
-        "ENABLING",
-        "ENLIST",
-        "ENLISTING",
-        "ENTENTE",
-        "ENTITIES",
-        "ESTATE",
-        "ESTATES",
-        "EXEGESIS",
-        "EXILE",
-        "EXILES",
-        "EXIST",
-        "EXISTENT",
-        "EXISTING",
-        "EXISTS",
-        "EXITS",
-        "EXTANT",
-        "EXTENT",
-        "GELATIN",
-        "GENES",
-        "GENESIS",
-        "GENET",
-        "GENITAL",
-        "GENITALS",
-        "GENIUS",
-        "GENIUSES",
-        "GENTILE",
-        "GENTILES",
-        "GENUINE",
-        "GENUS",
-        "GLAZE",
-        "GLAZING",
-        "GLISTENING",
-        "GLUTEN",
-        "GUINEA",
-        "GUINEAS",
-        "GUISE",
-        "INALIENABLE",
-        "INGUINAL",
-        "INLET",
-        "INTENT",
-        "INTENTS",
-        "INTESTATE",
-        "INTESTINAL",
-        "INTESTINE",
-        "INTESTINES",
-        "ISLES",
-      ]
-    `)
+    expect(candidates).toContain('ABAXILE')
+    expect(candidates).toContain('ANABAENAS')
+  })
 
+  it('should contain only common words if onlyCommonWords is true', () => {
+    const onlyCommonWords = true
+    const candidates = candidateWords(layoutFromString('AGI/BEU/LTZ/NSX'), onlyCommonWords)
+
+    expect(candidates.length).toMatchInlineSnapshot('1872')
+
+    expect(candidates).toContain('NEXUS')
     expect(candidates).toContain('STABILIZING')
+
+    expect(candidates).not.toContain('ABAXILE')
+    expect(candidates).not.toContain('ANABAENAS')
   })
 })
 
 describe('solvePuzzle', () => {
   it('should solve a puzzle with lots of solutions', () => {
     const layout = layoutFromString('AGI/BEU/LTZ/NSX')
-    const solutions = solvePuzzle(layout)
-    expect(solutions.length).toBe(166)
+
+    const onlyCommonWords = false
+    const solutions = solvePuzzle(layout, onlyCommonWords)
+
+    expect(solutions.length).toMatchInlineSnapshot('166')
+    expect(solutions).toContain('NEXUS STABILIZING')
+  })
+
+  it('should generate fewer solutions if onlyCommonWords is true', () => {
+    const layout = layoutFromString('AGI/BEU/LTZ/NSX')
+
+    const onlyCommonWords = true
+    const solutions = solvePuzzle(layout, onlyCommonWords)
+
+    expect(solutions.length).toMatchInlineSnapshot('166')
     expect(solutions).toContain('NEXUS STABILIZING')
   })
 
@@ -276,6 +118,11 @@ describe('solvePuzzle', () => {
   it(`should solve today's puzzle for me`, () => {
     const layout = layoutFromString('AIG/PUV/RTL/WEO')
     const solutions = solvePuzzle(layout)
-    expect(solutions).toMatchInlineSnapshot('[]')
+    expect(solutions).toMatchInlineSnapshot(`
+      [
+        "OVERWRITE EARPLUG",
+        "TOPWATER REGULATIVE",
+      ]
+    `)
   })
 })

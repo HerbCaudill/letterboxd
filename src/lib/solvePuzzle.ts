@@ -1,9 +1,8 @@
 import { Layout } from 'types'
-import { allWords, distinctLetterCount } from './words'
-import { commonWords } from '../data/common.json'
+import { commonWords, allWords, distinctLetterCount } from './words'
 
-export const solvePuzzle = (layout: Layout) => {
-  const candidates = candidateWords(layout)
+export const solvePuzzle = (layout: Layout, { onlyCommonWords = false }: Options = {}) => {
+  const candidates = candidateWords(layout, { onlyCommonWords })
   return candidates.flatMap(word1 => {
     return candidates
       .filter(word => word1.endsWith(word[0]))
@@ -12,9 +11,11 @@ export const solvePuzzle = (layout: Layout) => {
   })
 }
 
-export const candidateWords = (layout: Layout) => {
+export const candidateWords = (layout: Layout, { onlyCommonWords = false }: Options = {}) => {
   const letters = new Set(layout.flatMap(side => Array.from(side)))
-  return wordsOnlyContaining(letters).filter(word => noAdjacentLetters(word, layout))
+  return wordsOnlyContaining(letters, { onlyCommonWords }).filter(word =>
+    noAdjacentLetters(word, layout)
+  )
 }
 
 export const noAdjacentLetters = (word: string, layout: Layout) => {
@@ -33,5 +34,14 @@ export const noAdjacentLetters = (word: string, layout: Layout) => {
  * @param letters
  * @returns
  */
-export const wordsOnlyContaining = (letters: Set<string>) =>
-  commonWords.filter(word => Array.from(word).every(letter => letters.has(letter)))
+export const wordsOnlyContaining = (
+  letters: Set<string>,
+  { onlyCommonWords = false }: Options = {}
+) => {
+  const wordList = onlyCommonWords ? commonWords : allWords
+  return wordList.filter(word => Array.from(word).every(letter => letters.has(letter)))
+}
+
+type Options = {
+  onlyCommonWords?: boolean
+}

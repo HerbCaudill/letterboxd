@@ -1,6 +1,5 @@
 import { makeRandom } from '@herbcaudill/random'
-import { commonWords } from '../data/common.json'
-import { distinctLetterCount } from './words'
+import { commonWords, distinctLetterCount } from './words'
 import { generateLayout } from './generateLayout'
 import { Puzzle } from 'types'
 

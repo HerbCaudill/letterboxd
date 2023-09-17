@@ -1,16 +1,16 @@
 import { State } from 'types'
 
 export const storage = {
-  set: (date: string, value: State) => {
-    localStorage.setItem(getKey(date), serialize(value))
+  set: (date: string, level: string, value: State) => {
+    localStorage.setItem(getKey(date, level), serialize(value))
   },
-  get: (date: string) => {
-    const value = localStorage.getItem(getKey(date))
+  get: (date: string, level: string) => {
+    const value = localStorage.getItem(getKey(date, level))
     if (value) return deserialize(value)
   },
 }
 
-const getKey = (date: string) => `letterboxd-${date}`
+const getKey = (date: string, level: string) => `letterboxd-${date}-${level}`
 
 // sets aren't serializable, so we have to convert them to and from arrays
 // also we omit the message because it's a react element (probably a terrible idea but anyway)
