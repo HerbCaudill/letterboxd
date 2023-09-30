@@ -127,8 +127,8 @@ describe('solvePuzzle', () => {
 
   it('should find 3-word solutions', () => {
     const layout = layoutFromString('AGI/BEU/LTZ/NSX')
-    const solutions = solvePuzzle(layout, { length: 3, onlyCommonWords: true })
-    expect(solutions.length).toMatchInlineSnapshot('1014')
+    const solutions = solvePuzzle(layout, { maxLength: 3, onlyCommonWords: true })
+    expect(solutions.length).toMatchInlineSnapshot('996')
     expect(solutions.slice(0, 10)).toMatchInlineSnapshot(`
       [
         "ALIEN NEXUS STABILIZING",
@@ -143,5 +143,44 @@ describe('solvePuzzle', () => {
         "AUNTIE EXEGESIS SIZABLE",
       ]
     `)
+    expect(solutions.filter(s => s.split(' ').length === 2)).toMatchInlineSnapshot(`
+      [
+        "NEXUS STABILIZING",
+      ]
+    `)
+  })
+
+  it('should find 3-word solutions', () => {
+    const layout = layoutFromString('ETR/INO/SHA/DLU')
+    const solutions = solvePuzzle(layout, { maxLength: 3, onlyCommonWords: true })
+    expect(solutions.length).toMatchInlineSnapshot('7826')
+    expect(solutions.slice(0, 10)).toMatchInlineSnapshot(`
+      [
+        "ADORN NATURALIST THEIR",
+        "ADORN NATURALIST THEIRS",
+        "ADORN NATURALIST THEORIES",
+        "ADORN NATURALIST THEORIST",
+        "ADORN NATURALIST THEORISTS",
+        "ADORN NATURALIST THESE",
+        "ADORN NATURALIST THESES",
+        "ADORN NATURALIST THESIS",
+        "ADORN NATURALIST THISTLE",
+        "ADORN NATURALIST THOSE",
+      ]
+    `)
+    expect(solutions.filter(s => s.split(' ').length === 2)).toMatchInlineSnapshot(`
+      [
+        "AROUSE ENDOTHELIAL",
+        "AUTHORISED DENTAL",
+        "AUTHORISED DIURNAL",
+        "AUTHORITARIAN NESTLED",
+        "HIDEOUS SENATORIAL",
+        "HOUNDS SENATORIAL",
+        "NURSE ENDOTHELIAL",
+        "ROUSE ENDOTHELIAL",
+        "SUNRISE ENDOTHELIAL",
+      ]
+    `)
+    expect(solutions.filter(s => s.split(' ').length === 1)).toMatchInlineSnapshot('[]')
   })
 })

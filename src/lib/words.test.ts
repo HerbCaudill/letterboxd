@@ -1,4 +1,4 @@
-import { distinctLetterCount, isValid } from './words'
+import { allWords, commonWords, distinctLetterCount, isValid } from './words'
 
 describe('distinctLetterCount', () => {
   it('should return the number of distinct letters in a word, excluding spaces', () => {
@@ -8,6 +8,51 @@ describe('distinctLetterCount', () => {
     expect(distinctLetterCount('COLORFUL BRISKET')).toBe(12)
     expect(distinctLetterCount('HAT TRUNK')).toBe(7)
     expect(distinctLetterCount('DYSMORPHIC CAVITATION')).toBe(14)
+  })
+
+  it('looking for one-word solutions', () => {
+    const oneWordSolutions = commonWords.filter(word => distinctLetterCount(word) === 12)
+    expect(oneWordSolutions).toMatchInlineSnapshot(`
+      [
+        "ACKNOWLEDGEMENT",
+        "ACKNOWLEDGMENT",
+        "ADVANTAGEOUSLY",
+        "COMPARATIVELY",
+        "COMPLEMENTARITY",
+        "COMPLIMENTARY",
+        "COMPREHENSIBLE",
+        "CONCEPTUALIZED",
+        "CONSIDERABLY",
+        "COUNTERVAILING",
+        "DEMOGRAPHICS",
+        "DISTINGUISHABLE",
+        "DIVERSIFICATION",
+        "DYSFUNCTIONAL",
+        "EXCLUSIONARY",
+        "HOMOSEXUALITY",
+        "HYDROCEPHALUS",
+        "INSURMOUNTABLE",
+        "INTERCHANGEABLY",
+        "INTRAVENOUSLY",
+        "JURISDICTIONAL",
+        "OVERWHELMINGLY",
+        "PHARMACEUTICALS",
+        "POLYMERIZATION",
+        "PREDOMINANTLY",
+        "REPUBLICANISM",
+        "SECULARIZATION",
+        "SUPERCONDUCTING",
+        "THERMODYNAMIC",
+        "UNCOMFORTABLE",
+        "UNCOMFORTABLY",
+        "UNCOMPLICATED",
+        "UNPREDICTABLE",
+        "UNPROFITABLE",
+        "UNQUESTIONABLY",
+        "UNSOPHISTICATED",
+        "UNSYMPATHETIC",
+      ]
+    `)
   })
 })
 

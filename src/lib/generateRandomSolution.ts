@@ -4,6 +4,7 @@ import { commonWords, distinctLetterCount } from './words'
 export function generateRandomSolution(seed = Math.random().toString()) {
   const rand = makeRandom(seed)
   const w1 = rand.pick(commonWords)
+  if (distinctLetterCount(w1) === 12) return w1
   const pairs = commonWords
     .filter(w2 => w1.endsWith(w2[0]))
     .map(w2 => `${w1} ${w2}`)
