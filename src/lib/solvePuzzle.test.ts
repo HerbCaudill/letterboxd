@@ -126,61 +126,61 @@ describe('solvePuzzle', () => {
   })
 
   it('should find 3-word solutions', () => {
-    const layout = layoutFromString('AGI/BEU/LTZ/NSX')
+    // ACKNOWLEDGEMENT
+    const layout = layoutFromString('AET/CGW/OLK/DMN')
     const solutions = solvePuzzle(layout, { maxLength: 3, onlyCommonWords: true })
-    expect(solutions.length).toMatchInlineSnapshot('996')
-    expect(solutions.slice(0, 10)).toMatchInlineSnapshot(`
-      [
-        "ALIEN NEXUS STABILIZING",
-        "ASTUTE EXEGESIS STABILIZING",
-        "ASTUTE EXILES STABILIZING",
-        "ASTUTE EXISTS STABILIZING",
-        "ASTUTE EXITS STABILIZING",
-        "AUGUST TAXES STABILIZING",
-        "AUGUST TEXAS STABILIZING",
-        "AUGUST TEXTILES STABILIZING",
-        "AUGUST TEXTS STABILIZING",
-        "AUNTIE EXEGESIS SIZABLE",
-      ]
-    `)
-    expect(solutions.filter(s => s.split(' ').length === 2)).toMatchInlineSnapshot(`
-      [
-        "NEXUS STABILIZING",
-      ]
-    `)
-  })
+    expect(solutions.length).toMatchInlineSnapshot('426')
 
-  it('should find 3-word solutions', () => {
-    const layout = layoutFromString('ETR/INO/SHA/DLU')
-    const solutions = solvePuzzle(layout, { maxLength: 3, onlyCommonWords: true })
-    expect(solutions.length).toMatchInlineSnapshot('7826')
-    expect(solutions.slice(0, 10)).toMatchInlineSnapshot(`
+    const solutionsOfLength = (length: number) =>
+      solutions.filter(s => s.split(' ').length === length)
+
+    expect(solutionsOfLength(3).slice(0, 10)).toMatchInlineSnapshot(`
       [
-        "ADORN NATURALIST THEIR",
-        "ADORN NATURALIST THEIRS",
-        "ADORN NATURALIST THEORIES",
-        "ADORN NATURALIST THEORIST",
-        "ADORN NATURALIST THEORISTS",
-        "ADORN NATURALIST THESE",
-        "ADORN NATURALIST THESES",
-        "ADORN NATURALIST THESIS",
-        "ADORN NATURALIST THISTLE",
-        "ADORN NATURALIST THOSE",
+        "ACKNOWLEDGE EDEMA ACKNOWLEDGEMENT",
+        "ACKNOWLEDGE EDEMA ACKNOWLEDGMENT",
+        "ACKNOWLEDGE EDEMA ADAMANT",
+        "ACKNOWLEDGE EDEMA AGENT",
+        "ACKNOWLEDGE ELEGANCE ELEMENT",
+        "ACKNOWLEDGE ELEGANCE ENACTMENT",
+        "ACKNOWLEDGE ELEGANCE ENGAGEMENT",
+        "ACKNOWLEDGE ENAMEL LAMENT",
+        "ACKNOWLEDGE ENCODE ELEMENT",
+        "ACKNOWLEDGE ENCODE ENACTMENT",
       ]
     `)
-    expect(solutions.filter(s => s.split(' ').length === 2)).toMatchInlineSnapshot(`
+    expect(solutionsOfLength(2)).toMatchInlineSnapshot(`
       [
-        "AROUSE ENDOTHELIAL",
-        "AUTHORISED DENTAL",
-        "AUTHORISED DIURNAL",
-        "AUTHORITARIAN NESTLED",
-        "HIDEOUS SENATORIAL",
-        "HOUNDS SENATORIAL",
-        "NURSE ENDOTHELIAL",
-        "ROUSE ENDOTHELIAL",
-        "SUNRISE ENDOTHELIAL",
+        "ACKNOWLEDGE ELEMENT",
+        "ACKNOWLEDGE ENACTMENT",
+        "ACKNOWLEDGE ENGAGEMENT",
+        "COCOA ACKNOWLEDGEMENT",
+        "COCOA ACKNOWLEDGMENT",
+        "DOGMA ACKNOWLEDGEMENT",
+        "DOGMA ACKNOWLEDGMENT",
+        "EDEMA ACKNOWLEDGEMENT",
+        "EDEMA ACKNOWLEDGMENT",
+        "GALENA ACKNOWLEDGEMENT",
+        "GALENA ACKNOWLEDGMENT",
+        "GENOA ACKNOWLEDGEMENT",
+        "GENOA ACKNOWLEDGMENT",
+        "KNOWLEDGE ENACTMENT",
+        "MAGMA ACKNOWLEDGEMENT",
+        "MAGMA ACKNOWLEDGMENT",
+        "MELANOMA ACKNOWLEDGEMENT",
+        "MELANOMA ACKNOWLEDGMENT",
+        "OEDEMA ACKNOWLEDGEMENT",
+        "OEDEMA ACKNOWLEDGMENT",
+        "OMEGA ACKNOWLEDGEMENT",
+        "OMEGA ACKNOWLEDGMENT",
+        "TONGA ACKNOWLEDGEMENT",
+        "TONGA ACKNOWLEDGMENT",
       ]
     `)
-    expect(solutions.filter(s => s.split(' ').length === 1)).toMatchInlineSnapshot('[]')
+    expect(solutionsOfLength(1)).toMatchInlineSnapshot(`
+      [
+        "ACKNOWLEDGEMENT",
+        "ACKNOWLEDGMENT",
+      ]
+    `)
   })
 })

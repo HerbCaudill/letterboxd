@@ -10,6 +10,7 @@ export const solvePuzzle = (layout: Layout, options: SolveOptions = {}) => {
     if (sequence.length === maxLength) return [sequence]
 
     const joinedSequence = sequence.join('')
+
     // we've already found a valid solution with fewer words
     if (distinctLetterCount(joinedSequence) === 12) return [sequence]
 
