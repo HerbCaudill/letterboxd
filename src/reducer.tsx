@@ -1,9 +1,9 @@
-import { lastLetter } from 'lastLetter'
+import { lastLetter } from 'lib/lastLetter'
 import { isSolution } from 'lib/isSolution'
 import { validateWord } from 'lib/validateWord'
-import { nextLetterCanBe } from 'nextLetterCanBe'
+import { nextLetterCanBe } from 'lib/nextLetterCanBe'
 import { Reducer } from 'react'
-import { removeDuplicateSequences } from 'removeDuplicateSequences'
+import { removeDuplicateSequences } from 'lib/removeDuplicateSequences'
 import { Layout, State } from 'types'
 
 export const initializer = (layout: Layout): State => {

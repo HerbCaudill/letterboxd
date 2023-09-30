@@ -1,16 +1,21 @@
 import { State } from 'types'
+import { layoutToString } from './generateLayout'
+import { Level, generatePuzzleWithLevel } from './generatePuzzleWithLevel'
 
 export const storage = {
-  set: (date: string, level: string, value: State) => {
+  set: (date: string, level: Level, value: State) => {
     localStorage.setItem(getKey(date, level), serialize(value))
   },
-  get: (date: string, level: string) => {
+  get: (date: string, level: Level) => {
     const value = localStorage.getItem(getKey(date, level))
     if (value) return deserialize(value)
   },
 }
 
-const getKey = (date: string, level: string) => `letterboxd-${date}-${level}`
+const getKey = (date: string, level: Level) => {
+  const { layout } = generatePuzzleWithLevel(level, date)
+  return layoutToString(layout)
+}
 
 // sets aren't serializable, so we have to convert them to and from arrays
 // also we omit the message because it's a react element (probably a terrible idea but anyway)

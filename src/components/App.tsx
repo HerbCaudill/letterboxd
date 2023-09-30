@@ -49,9 +49,13 @@ export const App = () => {
         </div>
       </div>
 
-      {/* lower sheet */}
       <div className="flex flex-col h-screen items-center bg-white">
         <div className="py-12 px-8 container auto-mx max-w-lg text-left flex flex-col gap-6 ">
+          <div className="flex flex-row justify-between w-full gap-4">
+            <button className="button" children="<" />
+            <span></span>
+            <button className="button" children=">" />
+          </div>
           <History />
           <Solutions showSolutions={showSolutions} onChange={setShowSolutions} />
         </div>
