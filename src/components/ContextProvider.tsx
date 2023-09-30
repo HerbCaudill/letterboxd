@@ -1,14 +1,14 @@
 import { Level, generatePuzzleWithLevel, levels } from 'lib/generatePuzzleWithLevel'
-import { getUtcDate } from 'lib/getUtcDate'
 import { queryString } from 'lib/queryString'
 import { createContext, useEffect, useReducer } from 'react'
 import { State } from 'types'
 import { storage } from '../lib/storage'
 import { Action, initializer, reducer } from '../reducer'
+import { getDate } from './getDate'
 
 // We generate a unique puzzle every day, with a new one appearing at midnight UTC.
 // We can also specify a date in the query string to get the puzzle for that date.
-let date = String(queryString('date') || getUtcDate())
+let date = getDate()
 
 const getLevel = (): Level => {
   const level = String(queryString('level'))

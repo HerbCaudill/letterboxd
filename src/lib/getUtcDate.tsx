@@ -1,7 +1,3 @@
-export function getUtcDate() {
-  const now = new Date()
-  const year = now.getUTCFullYear().toString()
-  const month = (now.getUTCMonth() + 1).toString().padStart(2, '0')
-  const day = now.getUTCDate().toString().padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
+import { LocalDate, DateTimeFormatter } from '@js-joda/core'
+
+export const getUtcDate = () => LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)

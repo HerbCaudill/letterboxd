@@ -1,14 +1,19 @@
+import { DateTimeFormatter, LocalDate } from '@js-joda/core'
+import { Locale } from '@js-joda/locale_en-us'
 import { useKeyboard } from 'hooks/useKeyboard'
 import { isAlpha } from 'lib/isAlpha'
 import { useContext, useState } from 'react'
 import { add, backspace, enter, restart } from 'reducer'
 import { Board } from './Board'
+import { Context } from './ContextProvider'
 import { History } from './History'
 import { MessageDisplay } from './MessageDisplay'
 import { Solutions } from './Solutions'
-import { Context } from './ContextProvider'
 import { WordInput } from './WordInput'
 import { WordSequence } from './WordSequence'
+import { datePlus } from './datePlus'
+import { getDate } from './getDate'
+import { getUtcDate } from 'lib/getUtcDate'
 
 export const App = () => {
   const { state, dispatch } = useContext(Context)
@@ -24,6 +29,9 @@ export const App = () => {
     else if ((key === 'Delete' || key === 'Backspace') && ctrlKey) dispatch(restart)
     else if (key === 'Escape') dispatch(restart)
   })
+
+  const date = getDate()
+  const today = getUtcDate()
 
   return (
     <>
@@ -42,20 +50,39 @@ export const App = () => {
             <Board />
           </div>
           <div className="flex gap-8 justify-center">
-            <button className="button" onClick={_ => dispatch(restart)} children="Restart" />
-            <button className="button" onClick={_ => dispatch(backspace)} children="Delete" />
-            <button className="button" onClick={_ => dispatch(enter)} children="Enter" />
+            <button
+              className="button button-sm"
+              onClick={_ => dispatch(restart)}
+              children="Restart"
+            />
+            <button
+              className="button button-sm"
+              onClick={_ => dispatch(backspace)}
+              children="Delete"
+            />
+            <button className="button button-sm" onClick={_ => dispatch(enter)} children="Enter" />
           </div>
         </div>
       </div>
 
       <div className="flex flex-col h-screen items-center bg-white">
+        <div className="flex flex-row items-center w-full gap-4 p-4 mb-4 border-b border-black">
+          <a className="button button-xs" children="<" href={`?date=${datePlus(date, -1)}`} />
+          <span className="text-sm font-semibold">
+            {LocalDate.parse(date).format(
+              DateTimeFormatter.ofPattern('MMMM d, yyyy').withLocale(Locale.ENGLISH)
+            )}
+          </span>
+
+          <span className="flex-grow" />
+          {today !== date && (
+            <>
+              <a className="button button-xs" children=">" href={`?date=${datePlus(date, 1)}`} />
+              <a className="button button-xs" children="Today" href={`?date=${today}`} />
+            </>
+          )}
+        </div>
         <div className="py-12 px-8 container auto-mx max-w-lg text-left flex flex-col gap-6 ">
-          <div className="flex flex-row justify-between w-full gap-4">
-            <button className="button" children="<" />
-            <span></span>
-            <button className="button" children=">" />
-          </div>
           <History />
           <Solutions showSolutions={showSolutions} onChange={setShowSolutions} />
         </div>
