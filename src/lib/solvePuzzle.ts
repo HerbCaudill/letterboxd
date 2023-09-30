@@ -1,17 +1,35 @@
 import { Layout } from 'types'
 import { commonWords, allWords, distinctLetterCount } from './words'
 
-export const solvePuzzle = (layout: Layout, { onlyCommonWords = false }: Options = {}) => {
-  const candidates = candidateWords(layout, { onlyCommonWords })
-  return candidates.flatMap(word1 => {
-    return candidates
-      .filter(word => word1.endsWith(word[0]))
-      .map(word2 => `${word1} ${word2}`)
-      .filter(pair => distinctLetterCount(pair) === 12)
-  })
+export const solvePuzzle = (layout: Layout, options: SolveOptions = {}) => {
+  const { onlyCommonWords = false, length = 2 } = options
+
+  const candidates = candidateWords(layout, { onlyCommonWords }) // the only words we're interested in are ones that work with the layout
+
+  const solve = (sequence: string[] = []): string[][] => {
+    if (sequence.length === length) return [sequence]
+    const joinedSequence = sequence.join('')
+    const prevWord = sequence.length > 0 ? sequence[sequence.length - 1] : undefined
+
+    const nextCandidates: string[] = []
+
+    for (let i = 0; i < candidates.length; i++) {
+      const candidate = candidates[i]
+      if (prevWord && !prevWord.endsWith(candidate[0])) continue
+      if (sequence.length === length - 1 && distinctLetterCount(joinedSequence + candidate) !== 12)
+        continue
+
+      nextCandidates.push(candidate)
+    }
+
+    return nextCandidates.flatMap(word => solve(sequence.concat(word)))
+  }
+
+  return solve().map(words => words.join(' '))
 }
 
-export const candidateWords = (layout: Layout, { onlyCommonWords = false }: Options = {}) => {
+export const candidateWords = (layout: Layout, options: WordlistOptions = {}) => {
+  const { onlyCommonWords = false } = options
   const letters = new Set(layout.flatMap(side => Array.from(side)))
   return wordsOnlyContaining(letters, { onlyCommonWords }).filter(word =>
     noAdjacentLetters(word, layout)
@@ -36,12 +54,16 @@ export const noAdjacentLetters = (word: string, layout: Layout) => {
  */
 export const wordsOnlyContaining = (
   letters: Set<string>,
-  { onlyCommonWords = false }: Options = {}
+  { onlyCommonWords = false }: WordlistOptions = {}
 ) => {
   const wordList = onlyCommonWords ? commonWords : allWords
   return wordList.filter(word => Array.from(word).every(letter => letters.has(letter)))
 }
 
-type Options = {
+type WordlistOptions = {
   onlyCommonWords?: boolean
+}
+
+type SolveOptions = WordlistOptions & {
+  length?: number
 }

@@ -124,4 +124,24 @@ describe('solvePuzzle', () => {
       ]
     `)
   })
+
+  it('should find 3-word solutions', () => {
+    const layout = layoutFromString('AGI/BEU/LTZ/NSX')
+    const solutions = solvePuzzle(layout, { length: 3, onlyCommonWords: true })
+    expect(solutions.length).toMatchInlineSnapshot('1014')
+    expect(solutions.slice(0, 10)).toMatchInlineSnapshot(`
+      [
+        "ALIEN NEXUS STABILIZING",
+        "ASTUTE EXEGESIS STABILIZING",
+        "ASTUTE EXILES STABILIZING",
+        "ASTUTE EXISTS STABILIZING",
+        "ASTUTE EXITS STABILIZING",
+        "AUGUST TAXES STABILIZING",
+        "AUGUST TEXAS STABILIZING",
+        "AUGUST TEXTILES STABILIZING",
+        "AUGUST TEXTS STABILIZING",
+        "AUNTIE EXEGESIS SIZABLE",
+      ]
+    `)
+  })
 })
