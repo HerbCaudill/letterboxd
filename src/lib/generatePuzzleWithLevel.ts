@@ -3,7 +3,7 @@ import { Puzzle } from 'types'
 import { solvePuzzle } from './solvePuzzle'
 import { generatePuzzle } from './generatePuzzle'
 
-const SALT = 'vXuvqnVyj3UOQFE0PCP04Pqe'
+const SALT = 'DBFF6CA2-4FB3-4469-A7F2-C7BBB9C3F794'
 
 // harder levels have fewer solutions
 export const levels = {

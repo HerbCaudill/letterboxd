@@ -1,5 +1,4 @@
 import _Confetti from 'react-confetti'
-import { range } from 'lib/range'
 
 export const Confetti = () => (
   <_Confetti

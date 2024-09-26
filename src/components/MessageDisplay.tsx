@@ -56,7 +56,7 @@ const getMessageText = (message: Message) => {
       const words = message.words
       return (
         <>
-          {words.length === 2 && <span className="text-xl">🎉</span>}
+          {words.length === 2 && <span className="text-xl px-2">🎉</span>}
           You found a solution in <strong>{words.length}</strong> words!
         </>
       )

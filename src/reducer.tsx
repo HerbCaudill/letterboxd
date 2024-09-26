@@ -115,6 +115,16 @@ export const reducer: Reducer<State, Action> = (state, action) => {
         message: undefined,
       }
     }
+
+    case 'SET': {
+      // set state to one or more given words (e.g. from history)
+      return {
+        ...state,
+        words: action.words,
+        currentWord: action.words.at(-1) || '',
+        message: undefined,
+      }
+    }
   }
 
   return state
@@ -125,8 +135,10 @@ export type Action =
   | { type: 'BACKSPACE' }
   | { type: 'ENTER' }
   | { type: 'RESTART' }
+  | { type: 'SET'; words: string[] }
 
 export const add = (letter: string): Action => ({ type: 'ADD', letter: letter.toUpperCase() })
 export const backspace: Action = { type: 'BACKSPACE' }
 export const enter: Action = { type: 'ENTER' }
 export const restart: Action = { type: 'RESTART' }
+export const set = (words: string[]): Action => ({ type: 'SET', words })

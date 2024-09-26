@@ -8,7 +8,10 @@ import { uniq } from 'lodash'
 
 export const distinctLetters = (s: string) => uniq(s.replace(' ', ''))
 
-export const distinctLetterCount = (s: string) => distinctLetters(s).length
+export const distinctLetterCount = (s: string | string[]) => {
+  if (Array.isArray(s)) s = s.join('')
+  return distinctLetters(s).length
+}
 
 export const hasDoubleLetters = (word: string) => {
   for (let i = 0; i < word.length - 1; i++) {
