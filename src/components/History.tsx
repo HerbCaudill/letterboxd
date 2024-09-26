@@ -39,7 +39,7 @@ export const History = () => {
               ) : null}
               {distinctLetterCount(words) > 9 ? (
                 // show remaining letters if only a few left
-                <div className="text-gray-200">{remainingLetters.join('')}</div>
+                <div className="text-gray-300 font-bold">{remainingLetters.join('')}</div>
               ) : null}
             </div>
           )
