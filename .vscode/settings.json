@@ -6,20 +6,21 @@
     "*.css": "tailwindcss"
   },
   "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#000000",
-    "activityBar.background": "#000000",
-    "activityBar.foreground": "#e7e7e7",
-    "activityBar.inactiveForeground": "#e7e7e799",
-    "activityBarBadge.background": "#782828",
+    "activityBar.activeBackground": "#faa6a4",
+    "activityBar.background": "#faa6a4",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#08970c",
     "activityBarBadge.foreground": "#e7e7e7",
-    "sash.hoverBorder": "#000000",
-    "statusBar.background": "#000000",
-    "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#1a1a1a",
-    "statusBarItem.remoteBackground": "#000000",
-    "statusBarItem.remoteForeground": "#e7e7e7"
+    "sash.hoverBorder": "#faa6a4",
+    "statusBar.background": "#faa6a4",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#f77774",
+    "statusBarItem.remoteBackground": "#faa6a4",
+    "statusBarItem.remoteForeground": "#15202b"
   },
   "files.exclude": {
     "**/solutions.txt": true
-  }
+  },
+  "peacock.color": "FAA6A4"
 }
